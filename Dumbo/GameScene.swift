@@ -7,10 +7,15 @@
 
 import SpriteKit
 import GameplayKit
+import Lottie
+import UIKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var karakter: SKSpriteNode!
+    var backgroundNode: SKSpriteNode!
+    
+    
     var touchLocation = CGPoint()
     
     var cameraNode = SKCameraNode()
@@ -50,30 +55,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
         
-        createBG()
+        createBackground()
         createPlayer()
         setupCamera()
         startObstacleSpawn()
     }
     
-    func createBG() {
+    func createBackground() {
         for i in 0...2 {
-            let bg = SKSpriteNode(imageNamed: "bg")
-            bg.name = "BG"
-            bg.position = CGPoint(x: CGFloat(i) * bg.frame.width, y: 0)
-            bg.zPosition = -1.0
-            addChild(bg)
-            print(bg.position)
+            backgroundNode = SKSpriteNode(imageNamed: "background")
+//            backgroundNode.name = "Background"
+            backgroundNode.position = CGPoint(x: CGFloat(i) * backgroundNode.frame.width, y: 0)
+            backgroundNode.zPosition = -1.0
+            addChild(backgroundNode)
+//            print(backgroundNode.position)
         }
     }
     
+    //////using image
     func createPlayer() {
         karakter = SKSpriteNode(imageNamed: "karakter")
         karakter.name = "Player"
         karakter.zPosition = 5.0
         karakter.position = CGPoint(x: -frame.width/3, y: 0)
         addChild(karakter)
-        
+
         // Add physics body to the player for collision detection
         karakter.physicsBody = SKPhysicsBody(rectangleOf: karakter.size)
         //        karakter.physicsBody?.categoryBitMask = playerCategory
@@ -81,6 +87,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //        karakter.physicsBody?.contactTestBitMask = obstacleCategory
         karakter.physicsBody?.affectedByGravity = false
     }
+    
+//    func createPlayer() {
+//        let animationView = AnimationView()
+//        animationView.animation = Animation.named("35741-my-octopus-teacher") // Replace "lottieAnimationFileName" with the actual name of your Lottie animation file
+//        animationView.loopMode = .loop
+//        animationView.contentMode = .scaleAspectFill
+//        animationView.frame = CGRect(x: -frame.width/3, y: 0, width: animationView.frame.width, height: animationView.frame.height)
+//        animationView.play()
+//
+//        karakter = SKSpriteNode(texture: SKTexture(image: UIImage()), size: animationView.frame.size)
+//        karakter.name = "Player"
+//        karakter.zPosition = 5.0
+//        karakter.position = CGPoint(x: -frame.width/3, y: 0)
+//        addChild(karakter)
+//        karakter.addChild(animationView)
+//
+//        // Add physics body to the player for collision detection
+//        karakter.physicsBody = SKPhysicsBody(rectangleOf: karakter.size)
+//        // ...
+//    }
     
     func setupCamera() {
         addChild(cameraNode)
@@ -196,4 +222,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         karakter.position.x += amountToMove
     }
 }
+
+
 
