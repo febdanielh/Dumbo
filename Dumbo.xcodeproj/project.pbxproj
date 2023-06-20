@@ -85,10 +85,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E13629C32A419BA700EDFA99 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E13629C42A419BE700EDFA99 /* DumboComponents */,
+				E13629C52A419C0100EDFA99 /* ObstacleComponents */,
+				E13629C62A419C0E00EDFA99 /* BackgroundNode */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E13629C42A419BE700EDFA99 /* DumboComponents */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DumboComponents;
+			sourceTree = "<group>";
+		};
+		E13629C52A419C0100EDFA99 /* ObstacleComponents */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ObstacleComponents;
+			sourceTree = "<group>";
+		};
+		E13629C62A419C0E00EDFA99 /* BackgroundNode */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BackgroundNode;
+			sourceTree = "<group>";
+		};
 		E1B8DD4D2A39E63C00885AF2 = {
 			isa = PBXGroup;
 			children = (
 				E1B8DD582A39E63C00885AF2 /* Dumbo */,
+				E13629C32A419BA700EDFA99 /* Components */,
 				E1B8DD722A39E63D00885AF2 /* DumboTests */,
 				E1B8DD7C2A39E63D00885AF2 /* DumboUITests */,
 				E1B8DD572A39E63C00885AF2 /* Products */,
