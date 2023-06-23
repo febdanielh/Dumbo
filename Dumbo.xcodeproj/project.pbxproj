@@ -97,6 +97,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+
 		6ADC2E3F2A44AC740082CF6A /* dumbo-swimming */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				E1B8DD582A39E63C00885AF2 /* Dumbo */,
+				E13629C32A419BA700EDFA99 /* Components */,
 				E1B8DD722A39E63D00885AF2 /* DumboTests */,
 				E1B8DD7C2A39E63D00885AF2 /* DumboUITests */,
 				E1B8DD572A39E63C00885AF2 /* Products */,
