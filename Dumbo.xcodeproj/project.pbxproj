@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		6A599EA52A3F2A170099C990 /* 35741-my-octopus-teacher.json in Resources */ = {isa = PBXBuildFile; fileRef = 6A599EA42A3F2A170099C990 /* 35741-my-octopus-teacher.json */; };
 		6A599EAA2A3F331D0099C990 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6A599EA92A3F331D0099C990 /* Lottie */; };
+		6ADC2E4E2A44AD060082CF6A /* swim-5.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADC2E482A44AD060082CF6A /* swim-5.png */; };
+		6ADC2E4F2A44AD060082CF6A /* swim-6.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADC2E492A44AD060082CF6A /* swim-6.png */; };
+		6ADC2E502A44AD060082CF6A /* swim-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADC2E4A2A44AD060082CF6A /* swim-3.png */; };
+		6ADC2E512A44AD060082CF6A /* swim-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADC2E4B2A44AD060082CF6A /* swim-1.png */; };
+		6ADC2E522A44AD060082CF6A /* swim-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADC2E4C2A44AD060082CF6A /* swim-4.png */; };
+		6ADC2E532A44AD060082CF6A /* swim-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADC2E4D2A44AD060082CF6A /* swim-2.png */; };
 		E1B8DD5A2A39E63C00885AF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8DD592A39E63C00885AF2 /* AppDelegate.swift */; };
 		E1B8DD5C2A39E63C00885AF2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1B8DD5B2A39E63C00885AF2 /* GameScene.sks */; };
 		E1B8DD5E2A39E63C00885AF2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1B8DD5D2A39E63C00885AF2 /* Actions.sks */; };
@@ -42,6 +48,12 @@
 
 /* Begin PBXFileReference section */
 		6A599EA42A3F2A170099C990 /* 35741-my-octopus-teacher.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "35741-my-octopus-teacher.json"; sourceTree = "<group>"; };
+		6ADC2E482A44AD060082CF6A /* swim-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swim-5.png"; sourceTree = "<group>"; };
+		6ADC2E492A44AD060082CF6A /* swim-6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swim-6.png"; sourceTree = "<group>"; };
+		6ADC2E4A2A44AD060082CF6A /* swim-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swim-3.png"; sourceTree = "<group>"; };
+		6ADC2E4B2A44AD060082CF6A /* swim-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swim-1.png"; sourceTree = "<group>"; };
+		6ADC2E4C2A44AD060082CF6A /* swim-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swim-4.png"; sourceTree = "<group>"; };
+		6ADC2E4D2A44AD060082CF6A /* swim-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swim-2.png"; sourceTree = "<group>"; };
 		E1B8DD562A39E63C00885AF2 /* Dumbo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dumbo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1B8DD592A39E63C00885AF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1B8DD5B2A39E63C00885AF2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -85,6 +97,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6ADC2E3F2A44AC740082CF6A /* dumbo-swimming */ = {
+			isa = PBXGroup;
+			children = (
+				6ADC2E4B2A44AD060082CF6A /* swim-1.png */,
+				6ADC2E4D2A44AD060082CF6A /* swim-2.png */,
+				6ADC2E4A2A44AD060082CF6A /* swim-3.png */,
+				6ADC2E4C2A44AD060082CF6A /* swim-4.png */,
+				6ADC2E482A44AD060082CF6A /* swim-5.png */,
+				6ADC2E492A44AD060082CF6A /* swim-6.png */,
+			);
+			path = "dumbo-swimming";
+			sourceTree = "<group>";
+		};
 		E1B8DD4D2A39E63C00885AF2 = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +138,7 @@
 				E1B8DD5B2A39E63C00885AF2 /* GameScene.sks */,
 				E1B8DD5D2A39E63C00885AF2 /* Actions.sks */,
 				E1B8DD5F2A39E63C00885AF2 /* GameScene.swift */,
+				6ADC2E3F2A44AC740082CF6A /* dumbo-swimming */,
 				E1B8DD612A39E63C00885AF2 /* GameViewController.swift */,
 				E1B8DD632A39E63C00885AF2 /* Main.storyboard */,
 				E1B8DD662A39E63D00885AF2 /* Assets.xcassets */,
@@ -249,8 +275,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6ADC2E532A44AD060082CF6A /* swim-2.png in Resources */,
+				6ADC2E522A44AD060082CF6A /* swim-4.png in Resources */,
+				6ADC2E4F2A44AD060082CF6A /* swim-6.png in Resources */,
 				E1B8DD652A39E63C00885AF2 /* Main.storyboard in Resources */,
+				6ADC2E502A44AD060082CF6A /* swim-3.png in Resources */,
+				6ADC2E4E2A44AD060082CF6A /* swim-5.png in Resources */,
 				E1B8DD5C2A39E63C00885AF2 /* GameScene.sks in Resources */,
+				6ADC2E512A44AD060082CF6A /* swim-1.png in Resources */,
 				E1B8DD672A39E63D00885AF2 /* Assets.xcassets in Resources */,
 				E1B8DD6A2A39E63D00885AF2 /* LaunchScreen.storyboard in Resources */,
 				E1B8DD5E2A39E63C00885AF2 /* Actions.sks in Resources */,

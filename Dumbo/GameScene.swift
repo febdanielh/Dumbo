@@ -9,13 +9,13 @@ import SpriteKit
 import GameplayKit
 import Lottie
 import UIKit
+import SwiftUI
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
-    
+class GameScene: SKScene, SKPhysicsContactDelegate{
+
     var karakter: SKSpriteNode!
     var backgroundNode: SKSpriteNode!
-    
-    
+
     var touchLocation = CGPoint()
     
     var cameraNode = SKCameraNode()
@@ -64,22 +64,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createBackground() {
         for i in 0...2 {
             backgroundNode = SKSpriteNode(imageNamed: "background")
-//            backgroundNode.name = "Background"
+            backgroundNode.name = "Background"
             backgroundNode.position = CGPoint(x: CGFloat(i) * backgroundNode.frame.width, y: 0)
             backgroundNode.zPosition = -1.0
             addChild(backgroundNode)
-//            print(backgroundNode.position)
         }
     }
     
-    //////using image
+    
+    
     func createPlayer() {
-        karakter = SKSpriteNode(imageNamed: "karakter")
-        karakter.name = "Player"
+        var frames: [SKTexture] = []
+
+        for i in 1...6 {
+            let textureName = "swim-\(i)"
+            let texture = SKTexture(imageNamed: textureName)
+            frames.append(texture)
+        }
+
+        let animationAction = SKAction.animate(with: frames, timePerFrame: 0.1)
+
+        karakter = SKSpriteNode(texture: frames[0])
+        karakter.size = CGSize(width: 100, height: 100)
         karakter.zPosition = 5.0
         karakter.position = CGPoint(x: -frame.width/3, y: 0)
-        addChild(karakter)
+        karakter.run(SKAction.repeatForever(animationAction))
 
+        addChild(karakter)
+        
         // Add physics body to the player for collision detection
         karakter.physicsBody = SKPhysicsBody(rectangleOf: karakter.size)
         //        karakter.physicsBody?.categoryBitMask = playerCategory
@@ -87,26 +99,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //        karakter.physicsBody?.contactTestBitMask = obstacleCategory
         karakter.physicsBody?.affectedByGravity = false
     }
-    
-//    func createPlayer() {
-//        let animationView = AnimationView()
-//        animationView.animation = Animation.named("35741-my-octopus-teacher") // Replace "lottieAnimationFileName" with the actual name of your Lottie animation file
-//        animationView.loopMode = .loop
-//        animationView.contentMode = .scaleAspectFill
-//        animationView.frame = CGRect(x: -frame.width/3, y: 0, width: animationView.frame.width, height: animationView.frame.height)
-//        animationView.play()
-//
-//        karakter = SKSpriteNode(texture: SKTexture(image: UIImage()), size: animationView.frame.size)
-//        karakter.name = "Player"
-//        karakter.zPosition = 5.0
-//        karakter.position = CGPoint(x: -frame.width/3, y: 0)
-//        addChild(karakter)
-//        karakter.addChild(animationView)
-//
-//        // Add physics body to the player for collision detection
-//        karakter.physicsBody = SKPhysicsBody(rectangleOf: karakter.size)
-//        // ...
-//    }
+
     
     func setupCamera() {
         addChild(cameraNode)
@@ -118,51 +111,51 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let spawnAction = SKAction.run { [weak self] in
             self?.addObstacle()
         }
-        
+
         let waitAction = SKAction.wait(forDuration: 1.0)
-        
+
         let spawnSequence = SKAction.sequence([spawnAction, waitAction])
         let spawnForever = SKAction.repeatForever(spawnSequence)
-        
+
         run(spawnForever, withKey: "spawnObstacles")
     }
-    
+
     func stopObstacleSpawn() {
         removeAction(forKey: "spawnObstacles")
     }
-    
+
     func addObstacle() {
         let obstacle = SKSpriteNode(imageNamed: "obst")
-        
+
         let minY = playableRect.minY + obstacle.size.height/2
         let maxY = playableRect.maxY - obstacle.size.height*2
         let randomY = CGFloat.random(in: minY...maxY)
-        
+
         let cameraOffset = cameraNode.position.x - size.width / 2.0
         let obstacleX = size.width + obstacle.size.width + cameraOffset
-        
+
         obstacle.position = CGPoint(x: obstacleX, y: randomY/* Set the Y position based on your desired layout */)
-        
+
         addChild(obstacle)
-        
+
         // Add physics body to the obstacle for collision detection
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
         obstacle.physicsBody?.categoryBitMask = obstacleCategory
         obstacle.physicsBody?.collisionBitMask = playerCategory
         obstacle.physicsBody?.contactTestBitMask = playerCategory
         obstacle.physicsBody?.affectedByGravity = false
-        
+
         let floatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: 10.0), duration: 1)
         let reverseFloatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: -20.0), duration: 1)
         let floatingSequence = SKAction.sequence([floatingAction, reverseFloatingAction])
         let floatingRepeat = SKAction.repeatForever(floatingSequence)
-        
+
         obstacle.run(floatingRepeat)
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-        
+
         if contactMask == playerCategory | obstacleCategory {
             // Collision between player and obstacle detected
             if let obstacle = contact.bodyA.node as? SKSpriteNode {
@@ -170,7 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             } else if let obstacle = contact.bodyB.node as? SKSpriteNode {
                 obstacle.removeFromParent()
             }
-            
+
             // Handle any other collision-related logic
         }
     }
@@ -179,6 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             touchLocation = touch.location(in: self)
             karakter.position.y = touchLocation.y
+            
         }
     }
     
