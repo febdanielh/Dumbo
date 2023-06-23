@@ -90,3 +90,5 @@ fastlane/test_output
 
 iOSInjectionProject/
 view raw swift.gitignore hosted with ❤ by GitHub
+
+.DS_Store
