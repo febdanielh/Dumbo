@@ -10,9 +10,20 @@ import SpriteKit
 
 class Obstacle: SKSpriteNode {
     
+    let obstacleTextures = [
+        SKTexture(imageNamed: "botol"),
+        SKTexture(imageNamed: "bungkus makanan"),
+        SKTexture(imageNamed: "kantong plastik"),
+        SKTexture(imageNamed: "sandal")
+        // Add more texture options as needed
+    ]
+    
     init(){
-        let obstacleTexture = SKTexture(imageNamed: "obst")
-        super.init(texture: obstacleTexture, color: UIColor.clear, size: obstacleTexture.size())
+        // Randomly select a texture from the array
+        let randomTextureIndex = Int.random(in: 0..<obstacleTextures.count)
+        let randomTexture = obstacleTextures[randomTextureIndex]
+//        let obstacleSize = CGSize(width: 80, height: 80)
+        super.init(texture: randomTexture, color: UIColor.clear, size: randomTexture.size())
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,8 +42,8 @@ class Obstacle: SKSpriteNode {
         // Add physics body to the obstacle for collision detection
         physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody?.categoryBitMask = PhysicsCategory.obstacleCategory
-        physicsBody?.collisionBitMask = 0
-        physicsBody?.contactTestBitMask = PhysicsCategory.playerCategory
+        physicsBody?.collisionBitMask = PhysicsCategory.playerCategory
+        physicsBody?.contactTestBitMask = 0
         physicsBody?.affectedByGravity = false
         physicsBody?.velocity = CGVector(dx: -160.0, dy: 0)
         

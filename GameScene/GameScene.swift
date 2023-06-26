@@ -12,8 +12,8 @@ import UIKit
 import SwiftUI
 
 struct PhysicsCategory {
-    static let playerCategory: UInt32 = 0x1
-    static let obstacleCategory: UInt32 = 0x2
+    static let playerCategory: UInt32 = 0x2
+    static let obstacleCategory: UInt32 = 0x1
     static let groundCategory: UInt32 = 0x4
 }
 
@@ -22,7 +22,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var karakter: Player!
     var obstacles: Obstacle!
     var groundNode: Ground1!
-    var groundTopNode: SKNode!
+    var groundNode2: Ground2!
+    var groundNode3: Ground3!
     var backgroundNode: SKSpriteNode!
     
     var touchLocation = CGPoint()
@@ -65,10 +66,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         groundNode = Ground1(scene: self)
         groundNode.spawn()
+        groundNode.position = CGPoint(x: 375, y: -126.918)
+        groundNode.size.height = groundNode.size.height + 50
+        
+        groundNode2 = Ground2(scene: self)
+        groundNode2.spawn()
+        groundNode2.position = CGPoint(x: 375 + (groundNode.texture?.size().width)!, y: -126.918)
+        
+        groundNode3 = Ground3(scene: self)
+        groundNode3.spawn()
+        groundNode3.position = CGPoint(x: 375 + (groundNode.texture?.size().width)! + (groundNode2.texture?.size().width)!, y: -126.918)
         
         createBG()
-        //        createGround()
-        //        startObstacleSpawn()
     }
     
     func startObstacleSpawn() {
@@ -96,7 +105,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             backgroundNode.zPosition = -1.0
             addChild(backgroundNode)
             
-            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 10)
+            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 20)
             let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
             let moveLoop = SKAction.sequence([moveLeft, moveReset])
             let moveForever = SKAction.repeatForever(moveLoop)
@@ -156,5 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         lastUpdateTime = currentTime
         groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+        groundNode2.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+        groundNode3.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
     }
 }
