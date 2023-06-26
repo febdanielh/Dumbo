@@ -27,6 +27,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var groundNode3: Ground3!
     var backgroundNode: SKSpriteNode!
     
+    var popUpLose: PopUpLose!
+    
     var touchLocation = CGPoint()
     var startTouchPos: CGFloat!
     var karakterStartPos: CGFloat!
@@ -124,6 +126,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Collision between player and obstacle detected
             if let player = contact.bodyA.node as? SKSpriteNode {
                 player.removeFromParent()
+                popUpLose = PopUpLose(scene: self)
                 print("game over")
             } else if let obstacle = contact.bodyB.node as? SKSpriteNode {
                 
