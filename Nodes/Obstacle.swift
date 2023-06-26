@@ -40,12 +40,19 @@ class Obstacle: SKSpriteNode {
         zPosition = 2
         
         // Add physics body to the obstacle for collision detection
-        physicsBody = SKPhysicsBody(rectangleOf: size)
+        
+        let obstacleTextures = texture!
+        let obstacleSize = obstacleTextures.size()
+        
+        let customPhysicsBodyFromTexture = SKPhysicsBody(texture: obstacleTextures, alphaThreshold: 0.5, size: obstacleSize)
+        
+        physicsBody = customPhysicsBodyFromTexture
+//        physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody?.categoryBitMask = PhysicsCategory.obstacleCategory
         physicsBody?.collisionBitMask = PhysicsCategory.playerCategory
         physicsBody?.contactTestBitMask = 0
         physicsBody?.affectedByGravity = false
-        physicsBody?.velocity = CGVector(dx: -160.0, dy: 0)
+        physicsBody?.velocity = CGVector(dx: -170.0, dy: 0)
         
         let floatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: 10.0), duration: 1)
         let reverseFloatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: -10.0), duration: 1)

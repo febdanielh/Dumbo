@@ -48,7 +48,7 @@ class Player: SKSpriteNode {
         // Add physics body to the player for collision detection
         self.physicsBody = customPhysicsBodyFromTextureKarakter
         self.physicsBody?.categoryBitMask = PhysicsCategory.playerCategory
-        self.physicsBody?.collisionBitMask = 0
+        self.physicsBody?.collisionBitMask = PhysicsCategory.boundaryCategory
         self.physicsBody?.contactTestBitMask = PhysicsCategory.obstacleCategory | PhysicsCategory.groundCategory
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.usesPreciseCollisionDetection = true
