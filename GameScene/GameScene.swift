@@ -15,6 +15,7 @@ struct PhysicsCategory {
     static let playerCategory: UInt32 = 0x2
     static let obstacleCategory: UInt32 = 0x1
     static let groundCategory: UInt32 = 0x4
+    static let boundaryCategory: UInt32 = 0x16
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -29,9 +30,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var touchLocation = CGPoint()
     var startTouchPos: CGFloat!
     var karakterStartPos: CGFloat!
+    var isTouched: Bool = false
     
     var cameraNode = SKCameraNode()
-    var cameraMovePointPerSecond: CGFloat = 140.0
+    var cameraMovePointPerSecond: CGFloat = 120.0
     
     var lastUpdateTime: TimeInterval = 0.0
     var dt: TimeInterval = 0.0
@@ -52,9 +54,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return CGRect(x: 0.0, y: playableMargin, width: size.width, height: playableHeight)
     }
     
-    //    let obstacleType1Category: UInt32 = 0x2 << 1
-    //    let obstacleType2Category: UInt32 = 0x2 << 2
-    
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
         
@@ -67,7 +66,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         groundNode = Ground1(scene: self)
         groundNode.spawn()
         groundNode.position = CGPoint(x: 375, y: -126.918)
-        groundNode.size.height = groundNode.size.height + 50
+        groundNode.size.height = groundNode.size.height
         
         groundNode2 = Ground2(scene: self)
         groundNode2.spawn()
@@ -96,24 +95,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createBG() {
         
-        let backgroundTexture = SKTexture(imageNamed: "bg")
-        
-        for i in 0...2 {
-            backgroundNode = SKSpriteNode(imageNamed: "background-1")
+        for i in 0...18 {
+            let textureName = "background-\(i+1)"
+            let backgroundTexture = SKTexture(imageNamed: textureName)
+            backgroundNode = SKSpriteNode(texture: backgroundTexture)
             backgroundNode.name = "Background"
             backgroundNode.position = CGPoint(x: CGFloat(i) * backgroundNode.frame.width, y: 0)
             backgroundNode.zPosition = -1.0
             addChild(backgroundNode)
             
-            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 20)
-            let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
-            let moveLoop = SKAction.sequence([moveLeft, moveReset])
-            let moveForever = SKAction.repeatForever(moveLoop)
+            let moveDirection = backgroundTexture.size().width
+            
+            let moveLeft = SKAction.moveBy(x: CGFloat(-moveDirection), y: 0, duration: 20)
+            //            let moveReset = SKAction.moveBy(x: moveDirection, y: 0, duration: 0)
+            //            let moveLoop = SKAction.sequence([moveLeft, moveReset])
+            let moveForever = SKAction.repeatForever(moveLeft)
             
             backgroundNode.run(moveForever)
+            
             print(backgroundNode.position)
         }
-        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -121,14 +122,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.groundCategory {
             // Collision between player and obstacle detected
-            if let obstacle = contact.bodyA.node as? SKSpriteNode {
-                karakter.removeFromParent()
+            if let player = contact.bodyA.node as? SKSpriteNode {
+                player.removeFromParent()
                 print("game over")
             } else if let obstacle = contact.bodyB.node as? SKSpriteNode {
-                //                obstacle.removeFromParent()
+                
             }
-            
             // Handle any other collision-related logic
+        } else if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.obstacleCategory {
         }
     }
     
@@ -138,6 +139,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             startTouchPos = touchLocation.y
             karakterStartPos = karakter.position.y
         }
+        isTouched = true
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -157,15 +159,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if lastUpdateTime > 0 {
-            dt = currentTime - lastUpdateTime
-        } else {
-            dt = 0
+        if isTouched == true {
+            if lastUpdateTime > 0 {
+                dt = currentTime - lastUpdateTime
+            } else {
+                dt = 0
+            }
+            lastUpdateTime = currentTime
+            cameraMovePointPerSecond += 0.0001
+            
+            groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            groundNode2.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            groundNode3.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            
         }
-        
-        lastUpdateTime = currentTime
-        groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-        groundNode2.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-        groundNode3.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
     }
 }
