@@ -9,7 +9,6 @@ import SpriteKit
 import GameplayKit
 import Lottie
 import UIKit
-import SwiftUI
 
 struct PhysicsCategory {
     static let playerCategory: UInt32 = 0x2
@@ -28,13 +27,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var backgroundNode: SKSpriteNode!
     
     var popUpLose: PopUpLose!
+    var popUpWin: PopUpWin!
+    var popUpPause: PopUpPause!
+    var menuButton: MenuButton!
+    var retryButton: RetryButton!
     
     var touchLocation = CGPoint()
     var startTouchPos: CGFloat!
     var karakterStartPos: CGFloat!
-    var isTouched: Bool = false
     
-    var cameraNode = SKCameraNode()
+    var isTouched: Bool = false
+    var isGameOver: Bool = false
+    
     var cameraMovePointPerSecond: CGFloat = 120.0
     
     var lastUpdateTime: TimeInterval = 0.0
@@ -63,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         karakter.spawn()
         karakter.position = CGPoint(x: -frame.width/3, y: 0)
         
-        startObstacleSpawn()
+        //        startObstacleSpawn()
         
         groundNode = Ground1(scene: self)
         groundNode.spawn()
@@ -79,6 +83,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         groundNode3.position = CGPoint(x: 375 + (groundNode.texture?.size().width)! + (groundNode2.texture?.size().width)!, y: -126.918)
         
         createBG()
+        stopBackgroundMovement()
+        stopObstacleSpawn()
     }
     
     func startObstacleSpawn() {
@@ -87,7 +93,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             obstacle.spawn(in: self)
         }
         
-        let waitAction = SKAction.wait(forDuration: 4.0)
+        let waitAction = SKAction.wait(forDuration: 3.0)
         
         let spawnSequence = SKAction.sequence([spawnAction, waitAction])
         let spawnForever = SKAction.repeatForever(spawnSequence)
@@ -95,10 +101,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         run(spawnForever, withKey: "spawnObstacles")
     }
     
+    func stopObstacleSpawn() {
+        removeAction(forKey: "spawnObstacles")
+    }
+    
     func createBG() {
-        
         for i in 0...18 {
-            let textureName = "background-\(i+1)"
+            let textureName = "bg-\(i+1)"
             let backgroundTexture = SKTexture(imageNamed: textureName)
             backgroundNode = SKSpriteNode(texture: backgroundTexture)
             backgroundNode.name = "Background"
@@ -106,16 +115,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             backgroundNode.zPosition = -1.0
             addChild(backgroundNode)
             
-            let moveDirection = backgroundTexture.size().width
-            
-            let moveLeft = SKAction.moveBy(x: CGFloat(-moveDirection), y: 0, duration: 20)
-            //            let moveReset = SKAction.moveBy(x: moveDirection, y: 0, duration: 0)
-            //            let moveLoop = SKAction.sequence([moveLeft, moveReset])
-            let moveForever = SKAction.repeatForever(moveLeft)
-            
-            backgroundNode.run(moveForever)
-            
             print(backgroundNode.position)
+        }
+    }
+    
+    func stopBackgroundMovement() {
+        enumerateChildNodes(withName: "Background") { (node, _) in
+            node.removeAction(forKey: "MoveBackground")
+        }
+    }
+    
+    func startBackgroundMovement() {
+        let moveDirection = backgroundNode.texture!.size().width
+        let moveLeft = SKAction.moveBy(x: CGFloat(-moveDirection), y: 0, duration: 20)
+        let moveForever = SKAction.repeatForever(moveLeft)
+        
+        enumerateChildNodes(withName: "Background") { (node, _) in
+            node.run(moveForever, withKey: "MoveBackground")
         }
     }
     
@@ -123,16 +139,51 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
         if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.groundCategory {
-            // Collision between player and obstacle detected
+            // Collision between player and ground detected
             if let player = contact.bodyA.node as? SKSpriteNode {
                 player.removeFromParent()
+                stopBackgroundMovement()
+                stopObstacleSpawn()
+                
+                isGameOver = true
+                isTouched = false
+                
                 popUpLose = PopUpLose(scene: self)
+                
+                menuButton = MenuButton(scene: self)
+                menuButton.position = CGPoint(x: -80, y: -31)
+                
+                retryButton = RetryButton(scene: self)
+                retryButton.position = CGPoint(x: 80, y: -31)
+                
                 print("game over")
+                
             } else if let obstacle = contact.bodyB.node as? SKSpriteNode {
                 
             }
             // Handle any other collision-related logic
         } else if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.obstacleCategory {
+            
+            // Collision between player and obstacle detected
+            if let player = contact.bodyA.node as? SKSpriteNode {
+                player.removeFromParent()
+                stopBackgroundMovement()
+                stopObstacleSpawn()
+                
+                isGameOver = true
+                isTouched = false
+                
+                popUpLose = PopUpLose(scene: self)
+                
+                menuButton = MenuButton(scene: self)
+                menuButton.position = CGPoint(x: -80, y: -31)
+                
+                retryButton = RetryButton(scene: self)
+                retryButton.position = CGPoint(x: 80, y: -31)
+                
+                print("game over")
+                
+            }
         }
     }
     
@@ -141,8 +192,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             touchLocation = touch.location(in: self)
             startTouchPos = touchLocation.y
             karakterStartPos = karakter.position.y
+            
+            if isGameOver == true {
+                if menuButton.contains(touchLocation) {
+                    let scene = MainMenu(fileNamed: "MainMenu")
+                    scene!.scaleMode = .aspectFill
+                    self.scene?.view?.presentScene(scene)
+                } else if retryButton.contains(touchLocation) {
+                    let scene = GameScene(fileNamed: "GameScene")
+                    scene!.scaleMode = .aspectFill
+                    self.scene?.view?.presentScene(scene)
+                }
+            }
         }
+        
         isTouched = true
+        
+        startBackgroundMovement()
+        startObstacleSpawn()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -169,12 +236,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 dt = 0
             }
             lastUpdateTime = currentTime
-            cameraMovePointPerSecond += 0.0001
+            cameraMovePointPerSecond += 0.01
             
-            groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-            groundNode2.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-            groundNode3.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-            
+            if isTouched == true {
+                groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+                groundNode2.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+                groundNode3.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            }
         }
     }
 }

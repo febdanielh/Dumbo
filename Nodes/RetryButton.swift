@@ -1,22 +1,22 @@
 //
-//  PopUp.swift
+//  retryButton.swift
 //  Dumbo
 //
-//  Created by Azella Mutyara on 26/06/23.
+//  Created by Febrian Daniel on 26/06/23.
 //
 
 import Foundation
 import SpriteKit
 
-class PopUpLose: SKSpriteNode {
+class RetryButton: SKSpriteNode {
     
-    init(scene: SKScene){
-        let texture = SKTexture(imageNamed: "Pop Up Lose")
+    init(scene: SKScene) {
+        let texture = SKTexture(imageNamed: "Button Retry Small")
         
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
         
         scene.addChild(self)
-        zPosition = 10
+        zPosition = 11
     }
     
     required init?(coder aDecoder: NSCoder) {
