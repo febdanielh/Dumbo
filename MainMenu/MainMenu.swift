@@ -10,17 +10,13 @@ import SpriteKit
 
 class MainMenu: SKScene {
     
-    var homeAudio: SKAudioNode!
-    
     var playButton: SKSpriteNode!
     var chapterList: SKSpriteNode!
     var book: SKSpriteNode!
     
     override func didMove(to view: SKView) {
-        if let homeAudioURL = Bundle.main.url(forResource: "Main Menu Sound", withExtension: "mp3") {
-            homeAudio = SKAudioNode(url: homeAudioURL)
-            addChild(homeAudio)
-        }
+        let mainAudio = SKAudioNode(fileNamed: "Main Menu Sound")
+        addChild(mainAudio)
         
         playButton = SKSpriteNode(imageNamed: "Button Play")
         playButton.position = CGPoint(x: -120, y: -94)
