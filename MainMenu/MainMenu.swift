@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 
 class MainMenu: SKScene {
-    
+
     var playButton: SKSpriteNode!
     var chapterList: SKSpriteNode!
     var book: SKSpriteNode!
@@ -23,9 +23,28 @@ class MainMenu: SKScene {
         
         chapterList = SKSpriteNode(imageNamed: "Button Chapter List - Sec")
         chapterList.position = CGPoint(x: 120, y: -94)
+        chapterList.isUserInteractionEnabled = false
         
         book = SKSpriteNode(imageNamed: "Icon Book - Sec")
         book.position = CGPoint(x: -375, y: 150)
+        book.isUserInteractionEnabled = false
+        
+        // Check if the user is an existing user
+        let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
+        if existingUser {
+            // Set new textures for existing users
+            chapterList.texture = SKTexture(imageNamed: "Button Chapter List - Prim")
+            book.texture = SKTexture(imageNamed: "Icon Book - Prim")
+            
+            // Enable the chapterList and book buttons for existing users
+            chapterList.isUserInteractionEnabled = true
+            book.isUserInteractionEnabled = true
+            
+            print("existing user")
+        }
+        else{
+            print("new user")
+        }
         
         addChild(playButton)
         addChild(chapterList)
@@ -37,6 +56,9 @@ class MainMenu: SKScene {
             let location = touch.location(in: self)
             
             if playButton.contains(location) {
+                // Set the flag indicating that the user is now an existing user
+                UserDefaults.standard.set(true, forKey: "ExistingUser")
+                
                 let scene = GameScene(fileNamed: "GameScene")
                 scene!.scaleMode = .aspectFill
                 self.view?.presentScene(scene)
