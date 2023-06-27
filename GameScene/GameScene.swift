@@ -19,6 +19,9 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var stageOneSound: SKAudioNode!
+    var swimSound: SKAudioNode!
+    
     var karakter: Player!
     var obstacles: Obstacle!
     var groundNode: Ground1!
@@ -61,6 +64,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMove(to view: SKView) {
+        //
+        if let stageOneSoundURL = Bundle.main.url(forResource: "Stage 1 Sound", withExtension: "mp3") {
+            stageOneSound = SKAudioNode(url: stageOneSoundURL)
+            addChild(stageOneSound)
+        }
+        
+        
         physicsWorld.contactDelegate = self
         
         karakter = Player(scene: self)
@@ -156,6 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 retryButton = RetryButton(scene: self)
                 retryButton.position = CGPoint(x: 80, y: -31)
                 
+                stageOneSound.run(SKAction.stop())
                 print("game over")
                 
             } else if let obstacle = contact.bodyB.node as? SKSpriteNode {
@@ -181,6 +192,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 retryButton = RetryButton(scene: self)
                 retryButton.position = CGPoint(x: 80, y: -31)
                 
+                stageOneSound.run(SKAction.stop())
                 print("game over")
                 
             }
@@ -210,6 +222,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         startBackgroundMovement()
         startObstacleSpawn()
+        stageOneSound.run(SKAction.play())
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
