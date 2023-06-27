@@ -17,8 +17,8 @@ class MainMenu: SKScene {
     var book: SKSpriteNode!
     
     override func didMove(to view: SKView) {
-        if let musicURL = Bundle.main.url(forResource: "Main Menu Sound", withExtension: "mp3") {
-            homeAudio = SKAudioNode(url: musicURL)
+        if let homeAudioURL = Bundle.main.url(forResource: "Main Menu Sound", withExtension: "mp3") {
+            homeAudio = SKAudioNode(url: homeAudioURL)
             addChild(homeAudio)
         }
         
