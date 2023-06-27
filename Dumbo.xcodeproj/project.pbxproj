@@ -12,9 +12,11 @@
 		3D991A1F2A49A7A4009F6299 /* PopUpPause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D991A1E2A49A7A4009F6299 /* PopUpPause.swift */; };
 		6A599EA52A3F2A170099C990 /* 35741-my-octopus-teacher.json in Resources */ = {isa = PBXBuildFile; fileRef = 6A599EA42A3F2A170099C990 /* 35741-my-octopus-teacher.json */; };
 		6A599EAA2A3F331D0099C990 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6A599EA92A3F331D0099C990 /* Lottie */; };
+		A30FA78B2A4AE64D0000EB61 /* Lose Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */; };
+		A30FA7932A4AF2A40000EB61 /* SwimSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */; };
+		A30FA7952A4AF3550000EB61 /* Win Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */; };
 		A37FDC292A49B07C00CFC69D /* Main Menu Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A37FDC282A49B07C00CFC69D /* Main Menu Sound.mp3 */; };
 		A37FDC2C2A4A98E000CFC69D /* Stage 1 Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A37FDC2B2A4A98E000CFC69D /* Stage 1 Sound.mp3 */; };
-		A37FDC2E2A4A9E3600CFC69D /* Swim Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A37FDC2D2A4A9E3600CFC69D /* Swim Sound.mp3 */; };
 		E161F2172A49DDE800BC76F0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E161F2162A49DDE800BC76F0 /* MenuButton.swift */; };
 		E161F2192A49DE8D00BC76F0 /* RetryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E161F2182A49DE8D00BC76F0 /* RetryButton.swift */; };
 		E161F21B2A4A8BEF00BC76F0 /* InvisibleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E161F21A2A4A8BEF00BC76F0 /* InvisibleNode.swift */; };
@@ -64,9 +66,11 @@
 		3D991A1C2A49A75D009F6299 /* PopUpWin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpWin.swift; sourceTree = "<group>"; };
 		3D991A1E2A49A7A4009F6299 /* PopUpPause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpPause.swift; sourceTree = "<group>"; };
 		6A599EA42A3F2A170099C990 /* 35741-my-octopus-teacher.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "35741-my-octopus-teacher.json"; sourceTree = "<group>"; };
+		A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Lose Sound.mp3"; sourceTree = "<group>"; };
+		A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SwimSound.mp3; sourceTree = "<group>"; };
+		A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Win Sound.mp3"; sourceTree = "<group>"; };
 		A37FDC282A49B07C00CFC69D /* Main Menu Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Main Menu Sound.mp3"; sourceTree = "<group>"; };
 		A37FDC2B2A4A98E000CFC69D /* Stage 1 Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Stage 1 Sound.mp3"; sourceTree = "<group>"; };
-		A37FDC2D2A4A9E3600CFC69D /* Swim Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Swim Sound.mp3"; sourceTree = "<group>"; };
 		E161F2162A49DDE800BC76F0 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		E161F2182A49DE8D00BC76F0 /* RetryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryButton.swift; sourceTree = "<group>"; };
 		E161F21A2A4A8BEF00BC76F0 /* InvisibleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvisibleNode.swift; sourceTree = "<group>"; };
@@ -128,7 +132,9 @@
 			children = (
 				A37FDC282A49B07C00CFC69D /* Main Menu Sound.mp3 */,
 				A37FDC2B2A4A98E000CFC69D /* Stage 1 Sound.mp3 */,
-				A37FDC2D2A4A9E3600CFC69D /* Swim Sound.mp3 */,
+				A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */,
+				A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */,
+				A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */,
 			);
 			path = Sound;
 			sourceTree = "<group>";
@@ -338,16 +344,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A30FA7932A4AF2A40000EB61 /* SwimSound.mp3 in Resources */,
 				E1B8DD652A39E63C00885AF2 /* Main.storyboard in Resources */,
 				E1B8DD5C2A39E63C00885AF2 /* GameScene.sks in Resources */,
 				E1B8DD672A39E63D00885AF2 /* Assets.xcassets in Resources */,
+				A30FA78B2A4AE64D0000EB61 /* Lose Sound.mp3 in Resources */,
 				E1B8DD6A2A39E63D00885AF2 /* LaunchScreen.storyboard in Resources */,
 				A37FDC292A49B07C00CFC69D /* Main Menu Sound.mp3 in Resources */,
 				E1B8DD5E2A39E63C00885AF2 /* Actions.sks in Resources */,
 				A37FDC2C2A4A98E000CFC69D /* Stage 1 Sound.mp3 in Resources */,
 				E1D0EA102A4932D500282822 /* MainMenu.sks in Resources */,
+				A30FA7952A4AF3550000EB61 /* Win Sound.mp3 in Resources */,
 				6A599EA52A3F2A170099C990 /* 35741-my-octopus-teacher.json in Resources */,
-				A37FDC2E2A4A9E3600CFC69D /* Swim Sound.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
