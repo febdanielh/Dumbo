@@ -49,8 +49,8 @@ class Obstacle: SKSpriteNode {
         physicsBody = customPhysicsBodyFromTexture
 //        physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody?.categoryBitMask = PhysicsCategory.obstacleCategory
-        physicsBody?.collisionBitMask = PhysicsCategory.playerCategory
-        physicsBody?.contactTestBitMask = 0
+        physicsBody?.collisionBitMask = 0
+        physicsBody?.contactTestBitMask = PhysicsCategory.playerCategory
         physicsBody?.affectedByGravity = false
         physicsBody?.velocity = CGVector(dx: -170.0, dy: 0)
         

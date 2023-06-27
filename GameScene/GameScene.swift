@@ -93,7 +93,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             obstacle.spawn(in: self)
         }
         
-        let waitAction = SKAction.wait(forDuration: 4.0)
+        let waitAction = SKAction.wait(forDuration: 3.0)
         
         let spawnSequence = SKAction.sequence([spawnAction, waitAction])
         let spawnForever = SKAction.repeatForever(spawnSequence)
@@ -139,7 +139,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
         if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.groundCategory {
-            // Collision between player and obstacle detected
+            // Collision between player and ground detected
             if let player = contact.bodyA.node as? SKSpriteNode {
                 player.removeFromParent()
                 stopBackgroundMovement()
@@ -164,6 +164,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Handle any other collision-related logic
         } else if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.obstacleCategory {
             
+            // Collision between player and obstacle detected
+            if let player = contact.bodyA.node as? SKSpriteNode {
+                player.removeFromParent()
+                stopBackgroundMovement()
+                stopObstacleSpawn()
+                
+                isGameOver = true
+                isTouched = false
+                
+                popUpLose = PopUpLose(scene: self)
+                
+                menuButton = MenuButton(scene: self)
+                menuButton.position = CGPoint(x: -80, y: -31)
+                
+                retryButton = RetryButton(scene: self)
+                retryButton.position = CGPoint(x: 80, y: -31)
+                
+                print("game over")
+                
+            }
         }
     }
     
@@ -216,7 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 dt = 0
             }
             lastUpdateTime = currentTime
-            cameraMovePointPerSecond += 0.0001
+            cameraMovePointPerSecond += 0.01
             
             if isTouched == true {
                 groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
