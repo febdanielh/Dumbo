@@ -20,6 +20,11 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var stageOneSound: SKAudioNode!
+    var swimSound: SKAudioNode!
+    var winSound: SKAudioNode!
+    var loseSound: SKAudioNode!
+    
     var karakter: Player!
     var obstacles: Obstacle!
     
@@ -73,6 +78,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMove(to view: SKView) {
+        // Play Background Music
+        if let stageOneSoundURL = Bundle.main.url(forResource: "Stage 1 Sound", withExtension: "mp3") {
+            stageOneSound = SKAudioNode(url: stageOneSoundURL)
+            addChild(stageOneSound)
+        }
+        // Play Swim Music
+        if let swimSoundURL = Bundle.main.url(forResource: "SwimSound", withExtension: "mp3") {
+            swimSound = SKAudioNode(url: swimSoundURL)
+            addChild(swimSound)
+        }
+        
         physicsWorld.contactDelegate = self
         
         karakter = Player(scene: self)
@@ -176,6 +192,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        // Play Lose Music
+        if let loseSoundURL = Bundle.main.url(forResource: "Lose Sound", withExtension: "mp3") {
+            loseSound = SKAudioNode(url: loseSoundURL)
+            loseSound.autoplayLooped = false
+            addChild(loseSound)
+        }
         
         if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.groundCategory {
             // Collision between player and ground detected
@@ -197,6 +219,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 retryButton = RetryButton(scene: self)
                 retryButton.position = CGPoint(x: 80, y: -31)
                 
+                stageOneSound.run(SKAction.stop())
+                swimSound.run(SKAction.stop())
+                loseSound.run(SKAction.play())
                 print("game over")
                 
             } else if let obstacle = contact.bodyB.node as? SKSpriteNode {
@@ -223,6 +248,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 retryButton = RetryButton(scene: self)
                 retryButton.position = CGPoint(x: 80, y: -31)
                 
+                stageOneSound.run(SKAction.stop())
+                swimSound.run(SKAction.stop())
+                loseSound.run(SKAction.play())
                 print("game over")
             }
             
@@ -317,6 +345,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if karakter.position.x > frame.size.width {
+            if let winSoundURL = Bundle.main.url(forResource: "Win Sound", withExtension: "mp3") {
+                winSound = SKAudioNode(url: winSoundURL)
+                winSound.autoplayLooped = false
+                addChild(winSound)
+            }
+            
             isGameWin = true
             
             popUpWin = PopUpWin(scene: self)

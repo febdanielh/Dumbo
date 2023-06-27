@@ -15,6 +15,8 @@ class MainMenu: SKScene {
     var book: SKSpriteNode!
     
     override func didMove(to view: SKView) {
+        let mainSound = SKAudioNode(fileNamed: "Main Menu Sound")
+        addChild(mainSound)
         
         playButton = SKSpriteNode(imageNamed: "Button Play")
         playButton.position = CGPoint(x: -120, y: -94)
