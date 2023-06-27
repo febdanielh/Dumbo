@@ -11,10 +11,10 @@ import SpriteKit
 class Ground3: SKSpriteNode {
     
     init(scene: SKScene){
-        let groundTexture = SKTexture(imageNamed: "Slice 3")
+        let groundTexture = SKTexture(imageNamed: "ground-3")
         super.init(texture: groundTexture, color: UIColor.clear, size: groundTexture.size())
         
-        scene.addChild(self)
+//        scene.addChild(self)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -1,17 +1,17 @@
 //
-//  Ground2.swift
+//  Ground5.swift
 //  Dumbo
 //
-//  Created by Febrian Daniel on 26/06/23.
+//  Created by Febrian Daniel on 27/06/23.
 //
 
 import Foundation
 import SpriteKit
 
-class Ground2: SKSpriteNode {
+class Ground5: SKSpriteNode {
     
     init(scene: SKScene){
-        let groundTexture = SKTexture(imageNamed: "ground-2")
+        let groundTexture = SKTexture(imageNamed: "ground-5")
         super.init(texture: groundTexture, color: UIColor.clear, size: groundTexture.size())
         
 //        scene.addChild(self)

@@ -15,6 +15,7 @@ struct PhysicsCategory {
     static let obstacleCategory: UInt32 = 0x1
     static let groundCategory: UInt32 = 0x4
     static let boundaryCategory: UInt32 = 0x16
+    static let invisNodeCategory: UInt32 = 0x8
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -24,16 +25,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var karakter: Player!
     var obstacles: Obstacle!
+    
     var groundNode: Ground1!
     var groundNode2: Ground2!
     var groundNode3: Ground3!
+    var groundNode4: Ground4!
+    var groundNode5: Ground5!
+    
+    var groundNodes: [SKSpriteNode] = []
+    
     var backgroundNode: SKSpriteNode!
+    var invisNode: InvisibleNode!
     
     var popUpLose: PopUpLose!
     var popUpWin: PopUpWin!
     var popUpPause: PopUpPause!
     var menuButton: MenuButton!
     var retryButton: RetryButton!
+    var nextButton: NextButton!
     
     var touchLocation = CGPoint()
     var startTouchPos: CGFloat!
@@ -41,6 +50,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var isTouched: Bool = false
     var isGameOver: Bool = false
+    var isGameWin: Bool = false
+    var isInitialTouch: Bool = true
+    var popUpAppeared: Bool = false
     
     var cameraMovePointPerSecond: CGFloat = 120.0
     
@@ -77,24 +89,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         karakter.spawn()
         karakter.position = CGPoint(x: -frame.width/3, y: 0)
         
-        //        startObstacleSpawn()
-        
-        groundNode = Ground1(scene: self)
-        groundNode.spawn()
-        groundNode.position = CGPoint(x: 375, y: -126.918)
-        groundNode.size.height = groundNode.size.height
-        
-        groundNode2 = Ground2(scene: self)
-        groundNode2.spawn()
-        groundNode2.position = CGPoint(x: 375 + (groundNode.texture?.size().width)!, y: -126.918)
-        
-        groundNode3 = Ground3(scene: self)
-        groundNode3.spawn()
-        groundNode3.position = CGPoint(x: 375 + (groundNode.texture?.size().width)! + (groundNode2.texture?.size().width)!, y: -126.918)
-        
+        spawnGrounds()
         createBG()
-        stopBackgroundMovement()
-        stopObstacleSpawn()
     }
     
     func startObstacleSpawn() {
@@ -145,6 +141,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func spawnGrounds() {
+        
+        groundNode = Ground1(scene: self)
+        groundNode.spawn()
+        groundNode2 = Ground2(scene: self)
+        groundNode2.spawn()
+        groundNode3 = Ground3(scene: self)
+        groundNode3.spawn()
+        groundNode4 = Ground4(scene: self)
+        groundNode4.spawn()
+        groundNode5 = Ground5(scene: self)
+        groundNode5.spawn()
+        
+        groundNodes.append(groundNode)
+        groundNodes.append(groundNode2)
+        groundNodes.append(groundNode3)
+        groundNodes.append(groundNode4)
+        groundNodes.append(groundNode5)
+        
+        var previousGroundNode: SKSpriteNode?
+        let initialXPosition: CGFloat = 375
+        let groundNodeYPosition: CGFloat = -126.918
+        
+        // Loop through the ground nodes and set their positions
+        for groundNode in groundNodes {
+            if let previousNode = previousGroundNode {
+                groundNode.position = CGPoint(x: previousNode.position.x + previousNode.size.width, y: groundNodeYPosition)
+            } else {
+                groundNode.position = CGPoint(x: initialXPosition, y: groundNodeYPosition)
+            }
+            
+            addChild(groundNode)
+            
+            previousGroundNode = groundNode
+        }
+        // Set the position of the invisible node after all the ground nodes
+        if let lastGroundNode = groundNodes.last {
+            invisNode = InvisibleNode(scene: self)
+            invisNode.spawn()
+            invisNode.position = CGPoint(x: lastGroundNode.position.x + lastGroundNode.size.width, y: 0)
+        }
+    }
+    
     func didBegin(_ contact: SKPhysicsContact) {
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
@@ -152,6 +191,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Collision between player and ground detected
             if let player = contact.bodyA.node as? SKSpriteNode {
                 player.removeFromParent()
+                
+                isInitialTouch = true
                 stopBackgroundMovement()
                 stopObstacleSpawn()
                 
@@ -174,10 +215,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             // Handle any other collision-related logic
         } else if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.obstacleCategory {
-            
             // Collision between player and obstacle detected
             if let player = contact.bodyA.node as? SKSpriteNode {
                 player.removeFromParent()
+                
+                isInitialTouch = true
                 stopBackgroundMovement()
                 stopObstacleSpawn()
                 
@@ -194,8 +236,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 stageOneSound.run(SKAction.stop())
                 print("game over")
-                
             }
+            
+        } else if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.invisNodeCategory {
+            isInitialTouch = true
+            stopBackgroundMovement()
+            stopObstacleSpawn()
+            karakter.movePlayer()
         }
     }
     
@@ -206,6 +253,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             karakterStartPos = karakter.position.y
             
             if isGameOver == true {
+                popUpAppeared = true
                 if menuButton.contains(touchLocation) {
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
@@ -215,14 +263,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
                 }
+            } else if isGameWin == true {
+                popUpAppeared = true
+                if menuButton.contains(touchLocation) {
+                    let scene = MainMenu(fileNamed: "MainMenu")
+                    scene!.scaleMode = .aspectFill
+                    self.scene?.view?.presentScene(scene)
+                } else if nextButton.contains(touchLocation) {
+                    let scene = MainMenu(fileNamed: "MainMenu")
+                    scene!.scaleMode = .aspectFill
+                    self.scene?.view?.presentScene(scene)
+                }
             }
         }
         
-        isTouched = true
-        
-        startBackgroundMovement()
-        startObstacleSpawn()
-        stageOneSound.run(SKAction.play())
+        if popUpAppeared == true {
+            guard isInitialTouch else {
+                return
+            }
+            
+            isInitialTouch = true
+        } else {
+            guard isInitialTouch else {
+                return
+            }
+            isInitialTouch = false
+            startBackgroundMovement()
+            startObstacleSpawn()
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -239,23 +307,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         startTouchPos = nil
+        //        isTouched = true
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if isTouched == true {
+        if isInitialTouch == false {
             if lastUpdateTime > 0 {
                 dt = currentTime - lastUpdateTime
             } else {
                 dt = 0
             }
             lastUpdateTime = currentTime
-            cameraMovePointPerSecond += 0.01
+            cameraMovePointPerSecond += 0.02
             
-            if isTouched == true {
-                groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-                groundNode2.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-                groundNode3.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
-            }
+            groundNode.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            groundNode2.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            groundNode3.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            groundNode4.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            groundNode5.moveGround(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+            invisNode.moveNode(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
+        }
+        
+        if karakter.position.x > frame.size.width {
+            isGameWin = true
+            
+            popUpWin = PopUpWin(scene: self)
+            
+            menuButton = MenuButton(scene: self)
+            menuButton.position = CGPoint(x: -80, y: -31)
+            
+            nextButton = NextButton(scene: self)
+            nextButton.position = CGPoint(x: 80, y: -31)
+            
+            print("win game")
         }
     }
 }
