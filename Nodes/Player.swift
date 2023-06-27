@@ -54,4 +54,8 @@ class Player: SKSpriteNode {
         self.physicsBody?.usesPreciseCollisionDetection = true
         self.physicsBody?.allowsRotation = true
     }
+    
+    func movePlayer() {
+        self.physicsBody?.velocity = CGVector(dx: 170.0, dy: 0)
+    }
 }
