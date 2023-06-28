@@ -17,6 +17,9 @@
 		A30FA78B2A4AE64D0000EB61 /* Lose Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */; };
 		A30FA7932A4AF2A40000EB61 /* SwimSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */; };
 		A30FA7952A4AF3550000EB61 /* Win Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */; };
+		A32AD2F42A4C3DE5003160CB /* TutorialAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32AD2F32A4C3DE5003160CB /* TutorialAnimation.swift */; };
+		A32AD2F62A4C3E7B003160CB /* Play Button Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A32AD2F52A4C3E7B003160CB /* Play Button Sound.mp3 */; };
+		A32AD2F82A4C3E81003160CB /* Selected Button Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A32AD2F72A4C3E81003160CB /* Selected Button Sound.mp3 */; };
 		A37FDC292A49B07C00CFC69D /* Main Menu Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A37FDC282A49B07C00CFC69D /* Main Menu Sound.mp3 */; };
 		A37FDC2C2A4A98E000CFC69D /* Stage 1 Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A37FDC2B2A4A98E000CFC69D /* Stage 1 Sound.mp3 */; };
 		E161F2172A49DDE800BC76F0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E161F2162A49DDE800BC76F0 /* MenuButton.swift */; };
@@ -74,6 +77,9 @@
 		A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Lose Sound.mp3"; sourceTree = "<group>"; };
 		A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SwimSound.mp3; sourceTree = "<group>"; };
 		A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Win Sound.mp3"; sourceTree = "<group>"; };
+		A32AD2F32A4C3DE5003160CB /* TutorialAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialAnimation.swift; sourceTree = "<group>"; };
+		A32AD2F52A4C3E7B003160CB /* Play Button Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Play Button Sound.mp3"; path = "../../../../Play Button Sound.mp3"; sourceTree = "<group>"; };
+		A32AD2F72A4C3E81003160CB /* Selected Button Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Selected Button Sound.mp3"; path = "../../../../Selected Button Sound.mp3"; sourceTree = "<group>"; };
 		A37FDC282A49B07C00CFC69D /* Main Menu Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Main Menu Sound.mp3"; sourceTree = "<group>"; };
 		A37FDC2B2A4A98E000CFC69D /* Stage 1 Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Stage 1 Sound.mp3"; sourceTree = "<group>"; };
 		E161F2162A49DDE800BC76F0 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -150,6 +156,8 @@
 				A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */,
 				A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */,
 				A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */,
+				A32AD2F52A4C3E7B003160CB /* Play Button Sound.mp3 */,
+				A32AD2F72A4C3E81003160CB /* Selected Button Sound.mp3 */,
 			);
 			path = Sound;
 			sourceTree = "<group>";
@@ -247,6 +255,7 @@
 				E1B8DD5D2A39E63C00885AF2 /* Actions.sks */,
 				E1B8DD5F2A39E63C00885AF2 /* GameScene.swift */,
 				E1B8DD612A39E63C00885AF2 /* GameViewController.swift */,
+				A32AD2F32A4C3DE5003160CB /* TutorialAnimation.swift */,
 			);
 			path = GameScene;
 			sourceTree = "<group>";
@@ -365,12 +374,14 @@
 				E1B8DD652A39E63C00885AF2 /* Main.storyboard in Resources */,
 				E1B8DD5C2A39E63C00885AF2 /* GameScene.sks in Resources */,
 				E1B8DD672A39E63D00885AF2 /* Assets.xcassets in Resources */,
+				A32AD2F82A4C3E81003160CB /* Selected Button Sound.mp3 in Resources */,
 				A30FA78B2A4AE64D0000EB61 /* Lose Sound.mp3 in Resources */,
 				E1B8DD6A2A39E63D00885AF2 /* LaunchScreen.storyboard in Resources */,
 				A37FDC292A49B07C00CFC69D /* Main Menu Sound.mp3 in Resources */,
 				E1B8DD5E2A39E63C00885AF2 /* Actions.sks in Resources */,
 				A37FDC2C2A4A98E000CFC69D /* Stage 1 Sound.mp3 in Resources */,
 				E1D0EA102A4932D500282822 /* MainMenu.sks in Resources */,
+				A32AD2F62A4C3E7B003160CB /* Play Button Sound.mp3 in Resources */,
 				A30FA7952A4AF3550000EB61 /* Win Sound.mp3 in Resources */,
 				6A599EA52A3F2A170099C990 /* 35741-my-octopus-teacher.json in Resources */,
 				3C82AAE52A4BD61E00D65C0B /* InitialStory.sks in Resources */,
@@ -413,6 +424,7 @@
 				E161F21B2A4A8BEF00BC76F0 /* InvisibleNode.swift in Sources */,
 				E18A53422A4672E000EF7A42 /* Player.swift in Sources */,
 				3D991A1F2A49A7A4009F6299 /* PopUpPause.swift in Sources */,
+				A32AD2F42A4C3DE5003160CB /* TutorialAnimation.swift in Sources */,
 				E1D0EA192A49334400282822 /* Ground2.swift in Sources */,
 				E161F2192A49DE8D00BC76F0 /* RetryButton.swift in Sources */,
 				E1F6F39C2A4ABDEE00717F19 /* Ground4.swift in Sources */,

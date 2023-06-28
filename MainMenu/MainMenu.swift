@@ -71,11 +71,13 @@ class MainMenu: SKScene {
             let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
             if playButton.contains(location) {
                 if existingUser {
+                    playButtonSound()
                     let scene = GameScene(fileNamed: "GameScene")
                     scene!.scaleMode = .aspectFill
                     self.view?.presentScene(scene)
                 }
                 else {
+                    playButtonSound()
                     let scene = InitialStory(fileNamed: "InitialStory")
                     scene!.scaleMode = .aspectFill
                     self.view?.presentScene(scene)
