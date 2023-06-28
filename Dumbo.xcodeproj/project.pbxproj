@@ -40,6 +40,7 @@
 		E1D0EA122A4932DD00282822 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D0EA112A4932DD00282822 /* MainMenu.swift */; };
 		E1D0EA192A49334400282822 /* Ground2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D0EA182A49334400282822 /* Ground2.swift */; };
 		E1D0EA1B2A49334D00282822 /* Ground3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D0EA1A2A49334D00282822 /* Ground3.swift */; };
+		E1ED6E002A4B2C0500A1E711 /* PlayerDead.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ED6DFF2A4B2C0500A1E711 /* PlayerDead.swift */; };
 		E1F6F39C2A4ABDEE00717F19 /* Ground4.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6F39B2A4ABDEE00717F19 /* Ground4.swift */; };
 		E1F6F39E2A4ABDF800717F19 /* Ground5.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6F39D2A4ABDF800717F19 /* Ground5.swift */; };
 /* End PBXBuildFile section */
@@ -97,6 +98,7 @@
 		E1D0EA112A4932DD00282822 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		E1D0EA182A49334400282822 /* Ground2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ground2.swift; sourceTree = "<group>"; };
 		E1D0EA1A2A49334D00282822 /* Ground3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ground3.swift; sourceTree = "<group>"; };
+		E1ED6DFF2A4B2C0500A1E711 /* PlayerDead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDead.swift; sourceTree = "<group>"; };
 		E1F6F39B2A4ABDEE00717F19 /* Ground4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ground4.swift; sourceTree = "<group>"; };
 		E1F6F39D2A4ABDF800717F19 /* Ground5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ground5.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				E18A53412A4672E000EF7A42 /* Player.swift */,
+				E1ED6DFF2A4B2C0500A1E711 /* PlayerDead.swift */,
 				E18A53432A46730400EF7A42 /* Obstacle.swift */,
 				E18A53452A46732500EF7A42 /* Ground1.swift */,
 				E1D0EA182A49334400282822 /* Ground2.swift */,
@@ -398,6 +401,7 @@
 				E161F2192A49DE8D00BC76F0 /* RetryButton.swift in Sources */,
 				E1F6F39C2A4ABDEE00717F19 /* Ground4.swift in Sources */,
 				E18A53462A46732500EF7A42 /* Ground1.swift in Sources */,
+				E1ED6E002A4B2C0500A1E711 /* PlayerDead.swift in Sources */,
 				E1B8DD5A2A39E63C00885AF2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
