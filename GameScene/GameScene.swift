@@ -263,7 +263,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             isTouched = true
             stopBackgroundMovement()
             stopObstacleSpawn()
-            karakter.movePlayer()
         }
     }
     
