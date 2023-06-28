@@ -7,12 +7,25 @@
 
 import Foundation
 import SpriteKit
+import AVFoundation
 
 class MainMenu: SKScene {
-
+    
     var playButton: SKSpriteNode!
     var chapterList: SKSpriteNode!
     var book: SKSpriteNode!
+    
+    var playButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Play Button Sound", ofType: "mp3")!)
+    var audioPlayer = AVAudioPlayer()
+
+    func playButtonSound(){
+        guard let soundToPlay = try? AVAudioPlayer(contentsOf: playButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(playButtonSoundURL)")
+        }
+        soundToPlay.prepareToPlay()
+        self.audioPlayer = soundToPlay
+        self.audioPlayer.play()
+    }
     
     override func didMove(to view: SKView) {
         let mainSound = SKAudioNode(fileNamed: "Main Menu Sound")

@@ -7,8 +7,7 @@
 
 import SpriteKit
 import GameplayKit
-import Lottie
-import UIKit
+import AVFoundation
 
 struct PhysicsCategory {
     static let playerCategory: UInt32 = 0x2
@@ -19,6 +18,8 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    var dragUpTutorial: DragUpTutorial!
+    var dragDownTutorial: DragDownTutorial!
     
     var stageOneSound: SKAudioNode!
     var swimSound: SKAudioNode!
@@ -79,6 +80,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return CGRect(x: 0.0, y: playableMargin, width: size.width, height: playableHeight)
     }
     
+    // Sound Handler
+    var retryButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Selected Button Sound", ofType: "mp3")!)
+    var retryAudioPlayer = AVAudioPlayer()
+
+    func retryButtonSound(){
+        guard let retrySound = try? AVAudioPlayer(contentsOf: retryButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(retryButtonSoundURL)")
+        }
+        retrySound.prepareToPlay()
+        self.retryAudioPlayer = retrySound
+        self.retryAudioPlayer.play()
+    }
+    
+    
     override func didMove(to view: SKView) {
         // Play Background Music
         if let stageOneSoundURL = Bundle.main.url(forResource: "Stage 1 Sound", withExtension: "mp3") {
@@ -99,6 +114,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         spawnGrounds()
         createBG()
+        
+        dragUpTutorial = DragUpTutorial(scene:self)
+        dragUpTutorial.position = CGPoint(x: -frame.width/3, y: 100)
+        
+        dragDownTutorial = DragDownTutorial(scene:self)
+        dragDownTutorial.position = CGPoint(x: -frame.width/3, y: -100)
     }
     
     func startObstacleSpawn() {
@@ -275,24 +296,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if isGameOver == true {
                 popUpAppeared = true
                 if menuButton != nil && menuButton.contains(touchLocation) {
+                    retryButtonSound()
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
+                    
                 } else if retryButton != nil && retryButton.contains(touchLocation) {
+                    retryButtonSound()
                     let scene = GameScene(fileNamed: "GameScene")
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
+                    
                 }
             } else if isGameWin == true {
                 popUpAppeared = true
                 if menuButton.contains(touchLocation) {
+                    retryButtonSound()
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
+                    
                 } else if nextButton.contains(touchLocation) {
+                    retryButtonSound()
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
+                    
                 }
             }
         }
