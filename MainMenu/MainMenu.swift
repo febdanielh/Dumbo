@@ -55,13 +55,18 @@ class MainMenu: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             
+            let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
             if playButton.contains(location) {
-                // Set the flag indicating that the user is now an existing user
-                UserDefaults.standard.set(true, forKey: "ExistingUser")
-                
-                let scene = GameScene(fileNamed: "GameScene")
-                scene!.scaleMode = .aspectFill
-                self.view?.presentScene(scene)
+                if existingUser {
+                    let scene = GameScene(fileNamed: "GameScene")
+                    scene!.scaleMode = .aspectFill
+                    self.view?.presentScene(scene)
+                }
+                else {
+                    let scene = InitialStory(fileNamed: "InitialStory")
+                    scene!.scaleMode = .aspectFill
+                    self.view?.presentScene(scene)
+                }
             }
         }
     }
