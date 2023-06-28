@@ -52,7 +52,7 @@ class Player: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = PhysicsCategory.obstacleCategory | PhysicsCategory.groundCategory
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.usesPreciseCollisionDetection = true
-        self.physicsBody?.allowsRotation = true
+        self.physicsBody?.allowsRotation = false
     }
     
     func movePlayer() {

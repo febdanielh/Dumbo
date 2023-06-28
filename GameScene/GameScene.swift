@@ -26,6 +26,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var loseSound: SKAudioNode!
     
     var karakter: Player!
+    var karakterDead: PlayerDead!
     var obstacles: Obstacle!
     
     var groundNode: Ground1!
@@ -55,6 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var isGameWin: Bool = false
     var isInitialTouch: Bool = true
     var popUpAppeared: Bool = false
+    var isAnimated: Bool = false
     
     var cameraMovePointPerSecond: CGFloat = 120.0
     
@@ -202,51 +204,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.groundCategory {
             // Collision between player and ground detected
             if let player = contact.bodyA.node as? SKSpriteNode {
+                let deadPos = player.position
                 player.removeFromParent()
                 
                 isInitialTouch = true
                 stopBackgroundMovement()
                 stopObstacleSpawn()
                 
+                karakterDead = PlayerDead(scene: self, completion: {
+                    self.popUpLose = PopUpLose(scene: self)
+                    
+                    self.menuButton = MenuButton(scene: self)
+                    self.menuButton.position = CGPoint(x: -80, y: -31)
+                    
+                    self.retryButton = RetryButton(scene: self)
+                    self.retryButton.position = CGPoint(x: 80, y: -31)
+                })
+                karakterDead.position = deadPos
+                
                 isGameOver = true
-                isTouched = false
-                
-                popUpLose = PopUpLose(scene: self)
-                
-                menuButton = MenuButton(scene: self)
-                menuButton.position = CGPoint(x: -80, y: -31)
-                
-                retryButton = RetryButton(scene: self)
-                retryButton.position = CGPoint(x: 80, y: -31)
                 
                 stageOneSound.run(SKAction.stop())
                 swimSound.run(SKAction.stop())
                 loseSound.run(SKAction.play())
                 print("game over")
-                
-            } else if let obstacle = contact.bodyB.node as? SKSpriteNode {
-                
             }
-            // Handle any other collision-related logic
+            
         } else if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.obstacleCategory {
             // Collision between player and obstacle detected
             if let player = contact.bodyA.node as? SKSpriteNode {
+                let deadPos = player.position
                 player.removeFromParent()
                 
                 isInitialTouch = true
                 stopBackgroundMovement()
                 stopObstacleSpawn()
                 
+                karakterDead = PlayerDead(scene: self, completion: {
+                    self.popUpLose = PopUpLose(scene: self)
+                    
+                    self.menuButton = MenuButton(scene: self)
+                    self.menuButton.position = CGPoint(x: -80, y: -31)
+                    
+                    self.retryButton = RetryButton(scene: self)
+                    self.retryButton.position = CGPoint(x: 80, y: -31)
+                })
+                karakterDead.position = deadPos
+                
                 isGameOver = true
-                isTouched = false
-                
-                popUpLose = PopUpLose(scene: self)
-                
-                menuButton = MenuButton(scene: self)
-                menuButton.position = CGPoint(x: -80, y: -31)
-                
-                retryButton = RetryButton(scene: self)
-                retryButton.position = CGPoint(x: 80, y: -31)
                 
                 stageOneSound.run(SKAction.stop())
                 swimSound.run(SKAction.stop())
@@ -255,7 +260,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
         } else if contactMask == PhysicsCategory.playerCategory | PhysicsCategory.invisNodeCategory {
-            isInitialTouch = true
+            isTouched = true
             stopBackgroundMovement()
             stopObstacleSpawn()
             karakter.movePlayer()
@@ -270,11 +275,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if isGameOver == true {
                 popUpAppeared = true
-                if menuButton.contains(touchLocation) {
+                if menuButton != nil && menuButton.contains(touchLocation) {
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
-                } else if retryButton.contains(touchLocation) {
+                } else if retryButton != nil && retryButton.contains(touchLocation) {
                     let scene = GameScene(fileNamed: "GameScene")
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
@@ -293,11 +298,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        if popUpAppeared == true {
+        if popUpAppeared || isTouched {
             guard isInitialTouch else {
                 return
             }
-            
             isInitialTouch = true
         } else {
             guard isInitialTouch else {
@@ -344,23 +348,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             invisNode.moveNode(deltaTime: dt, cameraMovePerSecond: cameraMovePointPerSecond)
         }
         
-        if karakter.position.x > frame.size.width {
+        if karakter.position.x > frame.size.width && !isGameWin {
             if let winSoundURL = Bundle.main.url(forResource: "Win Sound", withExtension: "mp3") {
                 winSound = SKAudioNode(url: winSoundURL)
                 winSound.autoplayLooped = false
                 addChild(winSound)
             }
-            
             isGameWin = true
             
             popUpWin = PopUpWin(scene: self)
-            
             menuButton = MenuButton(scene: self)
             menuButton.position = CGPoint(x: -80, y: -31)
-            
             nextButton = NextButton(scene: self)
             nextButton.position = CGPoint(x: 80, y: -31)
             
+            winSound.run(SKAction.play())
             print("win game")
         }
     }
