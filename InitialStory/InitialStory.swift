@@ -66,7 +66,7 @@ class InitialStory: SKScene {
                 scene!.scaleMode = .aspectFill
                 scene!.playButtonSound()
                 self.view?.presentScene(scene)
-            } else if closeButton.contains(location) {
+            } else if  closeButton.contains(location) {
                 let scene = MainMenu(fileNamed: "MainMenu")
                 scene!.scaleMode = .aspectFill
                 scene!.selectedButtonSound()
