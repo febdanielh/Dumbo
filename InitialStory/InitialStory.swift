@@ -7,11 +7,36 @@
 
 import Foundation
 import SpriteKit
+import AVFoundation
 
 class InitialStory: SKScene {
     
     var closeButton: SKSpriteNode!
     var skipButton: SKSpriteNode!
+    
+    // Button Sound Handler
+    var playButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Play Button Sound", ofType: "mp3")!)
+    var selectedButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Selected Button Sound", ofType: "mp3")!)
+    var playAudioPlayer = AVAudioPlayer()
+    var selectedAudioPlayer = AVAudioPlayer()
+
+    func playButtonSound(){
+        guard let playButtonSound = try? AVAudioPlayer(contentsOf: playButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(playButtonSoundURL)")
+        }
+        playButtonSound.prepareToPlay()
+        self.playAudioPlayer = playButtonSound
+        self.playAudioPlayer.play()
+    }
+    
+    func selectedButtonSound(){
+        guard let selectedButtonSound = try? AVAudioPlayer(contentsOf: selectedButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(selectedButtonSoundURL)")
+        }
+        selectedButtonSound.prepareToPlay()
+        self.selectedAudioPlayer = selectedButtonSound
+        self.selectedAudioPlayer.play()
+    }
     
     override func didMove(to view: SKView) {
         skipButton = SKSpriteNode(imageNamed: "Icon Skip")
@@ -40,13 +65,15 @@ class InitialStory: SKScene {
                 // UserDefaults.standard.set(true, forKey: "ExistingUser")
                 let scene = GameScene(fileNamed: "GameScene")
                 scene!.scaleMode = .aspectFill
+                scene!.playButtonSound()
                 self.view?.presentScene(scene)
             }
             if closeButton.contains(location) {
                 // Set the flag indicating that the user is now an existing user
                 // UserDefaults.standard.set(true, forKey: "ExistingUser")
-                let scene = GameScene(fileNamed: "GameScene")
+                let scene = MainMenu(fileNamed: "MainMenu")
                 scene!.scaleMode = .aspectFill
+                scene!.selectedButtonSound()
                 self.view?.presentScene(scene)
             }
         }

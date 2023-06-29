@@ -15,16 +15,28 @@ class MainMenu: SKScene {
     var chapterList: SKSpriteNode!
     var book: SKSpriteNode!
     
+    // Button Sound Handler
     var playButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Play Button Sound", ofType: "mp3")!)
-    var audioPlayer = AVAudioPlayer()
+    var selectedButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Selected Button Sound", ofType: "mp3")!)
+    var playAudioPlayer = AVAudioPlayer()
+    var selectedAudioPlayer = AVAudioPlayer()
 
     func playButtonSound(){
-        guard let soundToPlay = try? AVAudioPlayer(contentsOf: playButtonSoundURL as URL) else {
+        guard let playButtonSound = try? AVAudioPlayer(contentsOf: playButtonSoundURL as URL) else {
             fatalError("Failed to initialize the audio player with asset: \(playButtonSoundURL)")
         }
-        soundToPlay.prepareToPlay()
-        self.audioPlayer = soundToPlay
-        self.audioPlayer.play()
+        playButtonSound.prepareToPlay()
+        self.playAudioPlayer = playButtonSound
+        self.playAudioPlayer.play()
+    }
+    
+    func selectedButtonSound(){
+        guard let selectedButtonSound = try? AVAudioPlayer(contentsOf: selectedButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(selectedButtonSoundURL)")
+        }
+        selectedButtonSound.prepareToPlay()
+        self.selectedAudioPlayer = selectedButtonSound
+        self.selectedAudioPlayer.play()
     }
     
     override func didMove(to view: SKView) {
@@ -71,15 +83,15 @@ class MainMenu: SKScene {
             let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
             if playButton.contains(location) {
                 if existingUser {
-                    playButtonSound()
                     let scene = GameScene(fileNamed: "GameScene")
                     scene!.scaleMode = .aspectFill
+                    scene!.playButtonSound()
                     self.view?.presentScene(scene)
                 }
                 else {
-                    playButtonSound()
                     let scene = InitialStory(fileNamed: "InitialStory")
                     scene!.scaleMode = .aspectFill
+                    scene!.playButtonSound()
                     self.view?.presentScene(scene)
                 }
             }
