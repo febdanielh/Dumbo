@@ -232,7 +232,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let lastGroundNode = groundNodes.last {
             invisNode = InvisibleNode(scene: self)
             invisNode.spawn()
-            invisNode.position = CGPoint(x: lastGroundNode.position.x + lastGroundNode.size.width, y: 0)
+            invisNode.position = CGPoint(x: lastGroundNode.position.x + lastGroundNode.size.width + 5, y: 0)
         }
     }
     
@@ -309,6 +309,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             isTouched = true
             stopBackgroundMovement()
             stopObstacleSpawn()
+            karakter.movePlayer()
         }
     }
     
@@ -429,6 +430,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             nextButton = NextButton(scene: self)
             nextButton.position = CGPoint(x: 80, y: -31)
             
+            stageOneSound.run(SKAction.stop())
+            swimSound.run(SKAction.stop())
             winSound.run(SKAction.play())
             print("win game")
         }

@@ -19,7 +19,7 @@ class InitialStory: SKScene {
     var selectedButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Selected Button Sound", ofType: "mp3")!)
     var playAudioPlayer = AVAudioPlayer()
     var selectedAudioPlayer = AVAudioPlayer()
-
+    
     func playButtonSound(){
         guard let playButtonSound = try? AVAudioPlayer(contentsOf: playButtonSoundURL as URL) else {
             fatalError("Failed to initialize the audio player with asset: \(playButtonSoundURL)")
@@ -46,7 +46,7 @@ class InitialStory: SKScene {
         closeButton.position = CGPoint(x: 385, y: 150)
         
         let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
-
+        
         if existingUser {
             addChild(closeButton)
             print("existing user")
@@ -61,16 +61,22 @@ class InitialStory: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             
-            if skipButton.contains(location) {
-                let scene = GameScene(fileNamed: "GameScene")
-                scene!.scaleMode = .aspectFill
-                scene!.playButtonSound()
-                self.view?.presentScene(scene)
-            } else if  closeButton.contains(location) {
-                let scene = MainMenu(fileNamed: "MainMenu")
-                scene!.scaleMode = .aspectFill
-                scene!.selectedButtonSound()
-                self.view?.presentScene(scene)
+            let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
+            
+            if existingUser {
+                if closeButton.contains(location) {
+                    let scene = MainMenu(fileNamed: "MainMenu")
+                    scene!.scaleMode = .aspectFill
+                    scene!.selectedButtonSound()
+                    self.view?.presentScene(scene)
+                }
+            } else {
+                if skipButton.contains(location) {
+                    let scene = GameScene(fileNamed: "GameScene")
+                    scene!.scaleMode = .aspectFill
+                    scene!.playButtonSound()
+                    self.view?.presentScene(scene)
+                }
             }
         }
     }
