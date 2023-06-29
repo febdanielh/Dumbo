@@ -81,17 +81,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return CGRect(x: 0.0, y: playableMargin, width: size.width, height: playableHeight)
     }
     
-    // Sound Handler
-    var retryButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Selected Button Sound", ofType: "mp3")!)
-    var retryAudioPlayer = AVAudioPlayer()
-    
-    func retryButtonSound(){
-        guard let retrySound = try? AVAudioPlayer(contentsOf: retryButtonSoundURL as URL) else {
-            fatalError("Failed to initialize the audio player with asset: \(retryButtonSoundURL)")
+
+    // Button Sound Handler
+    var playButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Play Button Sound", ofType: "mp3")!)
+    var selectedButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Selected Button Sound", ofType: "mp3")!)
+    var playAudioPlayer = AVAudioPlayer()
+    var selectedAudioPlayer = AVAudioPlayer()
+
+    func playButtonSound(){
+        guard let playButtonSound = try? AVAudioPlayer(contentsOf: playButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(playButtonSoundURL)")
+
         }
-        retrySound.prepareToPlay()
-        self.retryAudioPlayer = retrySound
-        self.retryAudioPlayer.play()
+        playButtonSound.prepareToPlay()
+        self.playAudioPlayer = playButtonSound
+        self.playAudioPlayer.play()
+    }
+    
+    func selectedButtonSound(){
+        guard let selectedButtonSound = try? AVAudioPlayer(contentsOf: selectedButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(selectedButtonSoundURL)")
+        }
+        selectedButtonSound.prepareToPlay()
+        self.selectedAudioPlayer = selectedButtonSound
+        self.selectedAudioPlayer.play()
     }
     
     
@@ -310,17 +323,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if menuButton != nil && menuButton.contains(touchLocation) {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
-                    retryButtonSound()
+
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
+                    scene!.selectedButtonSound()
                     self.scene?.view?.presentScene(scene)
                     
                 } else if retryButton != nil && retryButton.contains(touchLocation) {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
-                    retryButtonSound()
+
                     let scene = GameScene(fileNamed: "GameScene")
                     scene!.scaleMode = .aspectFill
+                    scene!.playButtonSound()
                     self.scene?.view?.presentScene(scene)
                 }
             } else if isGameWin == true {
@@ -328,17 +343,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if menuButton.contains(touchLocation) {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
-                    retryButtonSound()
+
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
+                    scene!.selectedButtonSound()
                     self.scene?.view?.presentScene(scene)
                     
                 } else if nextButton.contains(touchLocation) {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
-                    retryButtonSound()
+
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
+                    scene!.playButtonSound()
                     self.scene?.view?.presentScene(scene)
                     
                 }
