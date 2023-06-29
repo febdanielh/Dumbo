@@ -55,6 +55,10 @@ class Player: SKSpriteNode {
         self.physicsBody?.allowsRotation = false
     }
     
+    func despawn() {
+        self.physicsBody = nil
+    }
+    
     func movePlayer() {
         self.physicsBody?.velocity = CGVector(dx: 170.0, dy: 0)
     }

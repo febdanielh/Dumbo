@@ -27,7 +27,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var karakter: Player!
     var karakterDead: PlayerDead!
-    var obstacles: Obstacle!
+//    var obstacles: Obstacle!
+    var obstacles = Obstacle()
     
     var groundNode: Ground1!
     var groundNode2: Ground2!
@@ -46,6 +47,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var menuButton: MenuButton!
     var retryButton: RetryButton!
     var nextButton: NextButton!
+    var resumeButton: ResumeButton!
+    var pauseButton: PauseButton!
     
     var touchLocation = CGPoint()
     var startTouchPos: CGFloat!
@@ -57,6 +60,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var isInitialTouch: Bool = true
     var popUpAppeared: Bool = false
     var isAnimated: Bool = false
+    var isPause: Bool = false
     
     var cameraMovePointPerSecond: CGFloat = 120.0
     
@@ -97,14 +101,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         karakter.spawn()
         karakter.position = CGPoint(x: -frame.width/3, y: 0)
         
+        pauseButton = PauseButton(scene: self)
+        
         spawnGrounds()
         createBG()
     }
     
+    
     func startObstacleSpawn() {
         let spawnAction = SKAction.run {
             let obstacle = Obstacle()
-            obstacle.spawn(in: self)
+            self.obstacles.spawn(in: self)
         }
         
         let waitAction = SKAction.wait(forDuration: 3.0)
@@ -113,11 +120,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let spawnForever = SKAction.repeatForever(spawnSequence)
         
         run(spawnForever, withKey: "spawnObstacles")
+    
     }
     
     func stopObstacleSpawn() {
         removeAction(forKey: "spawnObstacles")
     }
+    
     
     func createBG() {
         for i in 0...18 {
@@ -268,10 +277,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         for touch in touches {
             touchLocation = touch.location(in: self)
             startTouchPos = touchLocation.y
             karakterStartPos = karakter.position.y
+            
+            if pauseButton.contains(touchLocation) {
+                
+                isPause = true
+                isInitialTouch = true
+                obstacles.stopMoving()
+                stopBackgroundMovement()
+                stopObstacleSpawn()
+
+                popUpPause = PopUpPause(scene: self)
+
+                menuButton = MenuButton(scene: self)
+                menuButton.position = CGPoint(x: -80, y: -31)
+
+                resumeButton = ResumeButton(scene: self)
+                resumeButton.position = CGPoint(x: 80, y: -31)
+            }
             
             if isGameOver == true {
                 popUpAppeared = true
@@ -295,7 +322,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     scene!.scaleMode = .aspectFill
                     self.scene?.view?.presentScene(scene)
                 }
+            } else if isPause == true {
+                popUpAppeared = true
+                karakter.despawn()
+                if menuButton != nil && menuButton.contains(touchLocation) {
+                    let scene = MainMenu(fileNamed: "MainMenu")
+                    scene!.scaleMode = .aspectFill
+                    self.scene?.view?.presentScene(scene)
+                } else if resumeButton != nil && resumeButton.contains(touchLocation) {
+                    popUpPause.removeFromParent()
+                    menuButton.removeFromParent()
+                    resumeButton.removeFromParent()
+                    popUpAppeared = false
+                    karakter.spawn()
+                }
             }
+              
         }
         
         if popUpAppeared || isTouched {

@@ -59,7 +59,7 @@ class Obstacle: SKSpriteNode {
         let floatingSequence = SKAction.sequence([floatingAction, reverseFloatingAction])
         let floatingRepeat = SKAction.repeatForever(floatingSequence)
         
-        run(floatingRepeat)
+        run(floatingRepeat, withKey: "float")
         
         //Create an action to check the obstacle's position and remove it if off-screen
         let despawnAction = SKAction.run {
@@ -83,4 +83,17 @@ class Obstacle: SKSpriteNode {
     func stopObstacleSpawn() {
         removeAction(forKey: "spawnObstacles")
     }
+    
+    
+    func stopMoving() {
+//        physicsBody = nil
+//        removeAction(forKey: "float") // Remove any running actions on the obstacle
+//        let floatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: 0.0), duration: 1)
+//        let reverseFloatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: 0.0), duration: 1)
+    }
+    
+    func resumeMoving() {
+        
+    }
+
 }
