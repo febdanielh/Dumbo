@@ -14,6 +14,9 @@
 		3D991A1F2A49A7A4009F6299 /* PopUpPause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D991A1E2A49A7A4009F6299 /* PopUpPause.swift */; };
 		6A599EA52A3F2A170099C990 /* 35741-my-octopus-teacher.json in Resources */ = {isa = PBXBuildFile; fileRef = 6A599EA42A3F2A170099C990 /* 35741-my-octopus-teacher.json */; };
 		6A599EAA2A3F331D0099C990 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 6A599EA92A3F331D0099C990 /* Lottie */; };
+		6A720CCF2A4DDD7400B16C89 /* CarouselScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A720CCE2A4DDD7400B16C89 /* CarouselScene.swift */; };
+		6A720CD12A4DDD8400B16C89 /* CarouselScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 6A720CD02A4DDD8400B16C89 /* CarouselScene.sks */; };
+		6A720CD32A4DDDC700B16C89 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A720CD22A4DDDC700B16C89 /* BackButton.swift */; };
 		A30FA78B2A4AE64D0000EB61 /* Lose Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */; };
 		A30FA7932A4AF2A40000EB61 /* SwimSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */; };
 		A30FA7952A4AF3550000EB61 /* Win Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */; };
@@ -75,6 +78,9 @@
 		3D991A1C2A49A75D009F6299 /* PopUpWin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpWin.swift; sourceTree = "<group>"; };
 		3D991A1E2A49A7A4009F6299 /* PopUpPause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpPause.swift; sourceTree = "<group>"; };
 		6A599EA42A3F2A170099C990 /* 35741-my-octopus-teacher.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "35741-my-octopus-teacher.json"; sourceTree = "<group>"; };
+		6A720CCE2A4DDD7400B16C89 /* CarouselScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselScene.swift; sourceTree = "<group>"; };
+		6A720CD02A4DDD8400B16C89 /* CarouselScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = CarouselScene.sks; sourceTree = "<group>"; };
+		6A720CD22A4DDDC700B16C89 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		A30FA78A2A4AE64D0000EB61 /* Lose Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Lose Sound.mp3"; sourceTree = "<group>"; };
 		A30FA7922A4AF2A40000EB61 /* SwimSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SwimSound.mp3; sourceTree = "<group>"; };
 		A30FA7942A4AF3550000EB61 /* Win Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Win Sound.mp3"; sourceTree = "<group>"; };
@@ -150,6 +156,15 @@
 			path = InitialStory;
 			sourceTree = "<group>";
 		};
+		6A720CCD2A4DDD5500B16C89 /* ChapterList */ = {
+			isa = PBXGroup;
+			children = (
+				6A720CCE2A4DDD7400B16C89 /* CarouselScene.swift */,
+				6A720CD02A4DDD8400B16C89 /* CarouselScene.sks */,
+			);
+			path = ChapterList;
+			sourceTree = "<group>";
+		};
 		A37FDC2A2A4A98D300CFC69D /* Sound */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +198,7 @@
 				E161F21A2A4A8BEF00BC76F0 /* InvisibleNode.swift */,
 				E161F21C2A4A909500BC76F0 /* NextButton.swift */,
 				E16CFDD72A4D9177004B9EBB /* ShaderNode.swift */,
+				6A720CD22A4DDDC700B16C89 /* BackButton.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -192,6 +208,7 @@
 			children = (
 				3C82AAE32A4BD60300D65C0B /* InitialStory */,
 				E18A53402A4672D000EF7A42 /* Nodes */,
+				6A720CCD2A4DDD5500B16C89 /* ChapterList */,
 				E1D0EA172A4932F200282822 /* GameScene */,
 				E1D0EA0D2A4932B200282822 /* MainMenu */,
 				E1B8DD582A39E63C00885AF2 /* Dumbo */,
@@ -385,6 +402,7 @@
 				A37FDC2C2A4A98E000CFC69D /* Stage 1 Sound.mp3 in Resources */,
 				E1D0EA102A4932D500282822 /* MainMenu.sks in Resources */,
 				A32AD2F62A4C3E7B003160CB /* Play Button Sound.mp3 in Resources */,
+				6A720CD12A4DDD8400B16C89 /* CarouselScene.sks in Resources */,
 				A30FA7952A4AF3550000EB61 /* Win Sound.mp3 in Resources */,
 				6A599EA52A3F2A170099C990 /* 35741-my-octopus-teacher.json in Resources */,
 				3C82AAE52A4BD61E00D65C0B /* InitialStory.sks in Resources */,
@@ -414,7 +432,9 @@
 			files = (
 				E1F6F39E2A4ABDF800717F19 /* Ground5.swift in Sources */,
 				E1B8DD8D2A39E6CC00885AF2 /* CGPoint+Ext.swift in Sources */,
+				6A720CCF2A4DDD7400B16C89 /* CarouselScene.swift in Sources */,
 				E1D0EA1B2A49334D00282822 /* Ground3.swift in Sources */,
+				6A720CD32A4DDDC700B16C89 /* BackButton.swift in Sources */,
 				E161F2172A49DDE800BC76F0 /* MenuButton.swift in Sources */,
 				3D991A1B2A49A231009F6299 /* PopUpLose.swift in Sources */,
 				3D991A1D2A49A75D009F6299 /* PopUpWin.swift in Sources */,

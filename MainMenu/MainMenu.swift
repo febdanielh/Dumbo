@@ -91,6 +91,12 @@ class MainMenu: SKScene {
                     scene!.scaleMode = .aspectFill
                     self.view?.presentScene(scene)
                 }
+                if chapterList.contains(location) {
+                    let scene = CarouselScene(fileNamed: "CarouselScene")
+                    scene!.scaleMode = .aspectFill
+                    self.view?.presentScene(scene)
+                }
+                                  
             }
         }
     }
