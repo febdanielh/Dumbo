@@ -36,26 +36,27 @@ class MainMenu: SKScene {
         
         chapterList = SKSpriteNode(imageNamed: "Button Chapter List - Sec")
         chapterList.position = CGPoint(x: 120, y: -94)
-        chapterList.isUserInteractionEnabled = false
+//        chapterList.isUserInteractionEnabled = false
         
         book = SKSpriteNode(imageNamed: "Icon Book - Sec")
         book.position = CGPoint(x: -375, y: 150)
-        book.isUserInteractionEnabled = false
         
         // Check if the user is an existing user
         let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
+        
         if existingUser {
             // Set new textures for existing users
             chapterList.texture = SKTexture(imageNamed: "Button Chapter List - Prim")
             book.texture = SKTexture(imageNamed: "Icon Book - Prim")
             
             // Enable the chapterList and book buttons for existing users
-            chapterList.isUserInteractionEnabled = true
-            book.isUserInteractionEnabled = true
+//            chapterList.isUserInteractionEnabled = true
+//            book.isUserInteractionEnabled = true
             
             print("existing user")
         }
         else{
+//            book.isUserInteractionEnabled = false
             print("new user")
         }
         
@@ -69,6 +70,7 @@ class MainMenu: SKScene {
             let location = touch.location(in: self)
             
             let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
+            
             if playButton.contains(location) {
                 if existingUser {
                     playButtonSound()
@@ -78,6 +80,13 @@ class MainMenu: SKScene {
                 }
                 else {
                     playButtonSound()
+                    let scene = InitialStory(fileNamed: "InitialStory")
+                    scene!.scaleMode = .aspectFill
+                    self.view?.presentScene(scene)
+                }
+            }
+            if existingUser {
+                if book.contains(location) {
                     let scene = InitialStory(fileNamed: "InitialStory")
                     scene!.scaleMode = .aspectFill
                     self.view?.presentScene(scene)

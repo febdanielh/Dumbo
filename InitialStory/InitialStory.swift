@@ -19,6 +19,7 @@ class InitialStory: SKScene {
         
         closeButton = SKSpriteNode(imageNamed: "Icon Close")
         closeButton.position = CGPoint(x: 385, y: 150)
+        
         let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
 
         if existingUser {
@@ -36,16 +37,11 @@ class InitialStory: SKScene {
             let location = touch.location(in: self)
             
             if skipButton.contains(location) {
-                // Set the flag indicating that the user is now an existing user
-                // UserDefaults.standard.set(true, forKey: "ExistingUser")
                 let scene = GameScene(fileNamed: "GameScene")
                 scene!.scaleMode = .aspectFill
                 self.view?.presentScene(scene)
-            }
-            if closeButton.contains(location) {
-                // Set the flag indicating that the user is now an existing user
-                // UserDefaults.standard.set(true, forKey: "ExistingUser")
-                let scene = GameScene(fileNamed: "GameScene")
+            } else if closeButton.contains(location) {
+                let scene = MainMenu(fileNamed: "MainMenu")
                 scene!.scaleMode = .aspectFill
                 self.view?.presentScene(scene)
             }
