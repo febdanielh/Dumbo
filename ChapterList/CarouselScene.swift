@@ -8,58 +8,79 @@
 import Foundation
 import SpriteKit
 
-class CarouselScene: SKScene {
-    
-    var backButton: SKSpriteNode!
-    var carouselContainer: SKCropNode!
-    var slideContainer: SKSpriteNode!
-    
-    let slideCount = 3
-    let slideWidth: CGFloat = UIScreen.main.bounds.width - 300
-    
-    override func didMove(to view: SKView) {
-        backButton = SKSpriteNode(imageNamed: "Button Back Small")
-        backButton.position = CGPoint(x: -192, y: 50)
 
-        carouselContainer = SKCropNode()
-        carouselContainer.maskNode = SKSpriteNode(color: .white, size: self.size) // Use scene's visible frame as the mask
+class CarouselScene: SKScene {
+    private var carouselNode: SKNode!
+    private var currentPageIndex = 0
+    private var backButton: SKSpriteNode!
+
+    private let images = ["chapter1", "chapter2", "chapter3", "chapter4", "chapter5", "chapter6", "chapter7", "chapter8", "chapter9"]
+    private let spacing: CGFloat = 50.0
+
+    override func didMove(to view: SKView) {
+        setupCarousel()
+    }
+
+    private func setupCarousel() {
+
+        carouselNode = SKNode()
+        addChild(carouselNode)
         
-        slideContainer = SKSpriteNode()
-        slideContainer.size = CGSize(width: slideCount * Int(slideWidth), height: Int(size.height))
-        
-        for i in 0..<slideCount {
-            let slideNode = createSlide(at: i)
-            slideNode.position.x = CGFloat(i) * slideWidth
-            slideContainer.addChild(slideNode)
+//        backButton = SKSpriteNode(imageNamed: "Button Back Small")
+//        backButton.position = CGPoint(x: 0, y: 0)
+
+        let carouselWidth = frame.width * CGFloat(images.count / 3)
+        let carouselHeight = frame.height
+
+        carouselNode.position = CGPoint(x: frame.midX - carouselWidth / 9 , y: frame.midY)
+
+        for (index, imageName) in images.enumerated() {
+
+            let imageNode = SKSpriteNode(imageNamed: imageName)
+            let xOffset = (imageNode.size.width + spacing) * CGFloat(index)
+            let yOffset: CGFloat = 15
+
+            imageNode.position = CGPoint(x: xOffset, y: yOffset)
+
+            imageNode.size = CGSize(width: 240, height: 178)
+            carouselNode.addChild(imageNode)
         }
         
-        carouselContainer.addChild(slideContainer)
-        addChild(carouselContainer)
-        addChild(backButton)
+//        carouselNode.addChild(backButton)
     }
-    
+
+
+    private func moveToNextPage() {
+        let nextPageIndex = currentPageIndex + 1
+
+        if nextPageIndex < images.count / 3 {
+            let moveAction = SKAction.moveBy(x: -frame.width, y: 0, duration: 0.5)
+            carouselNode.run(moveAction)
+
+            currentPageIndex = nextPageIndex
+        }
+    }
+
+    private func moveToPreviousPage() {
+        let previousPageIndex = currentPageIndex - 1
+
+        if previousPageIndex >= 0 {
+            let moveAction = SKAction.moveBy(x: frame.width, y: 0, duration: 0.5)
+            carouselNode.run(moveAction)
+
+            currentPageIndex = previousPageIndex
+        }
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            let location = touch.location(in: self)
-            
-            if backButton.contains(location) {
-                let scene = MainMenu(fileNamed: "MainMenu")
-                scene!.scaleMode = .aspectFill
-                self.view?.presentScene(scene)
-            }
+        guard let touch = touches.first else { return }
+
+        let touchLocation = touch.location(in: self)
+
+        if touchLocation.x > frame.midX {
+            moveToNextPage()
+        } else {
+            moveToPreviousPage()
         }
-    }
-    
-    func createSlide(at index: Int) -> SKSpriteNode {
-        let slideNode = SKSpriteNode(color: .clear, size: CGSize(width: slideWidth/10, height: size.height/10))
-        
-        let imageName = "chapter\(index + 1)"
-        let imageNode = SKSpriteNode(imageNamed: imageName)
-        imageNode.position = CGPoint(x: slideNode.size.width / 8, y: slideNode.size.height / 2)
-        imageNode.size = CGSize(width: 204, height: 178)
-        
-        slideNode.addChild(imageNode)
-        
-        return slideNode
     }
 }
