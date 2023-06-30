@@ -109,6 +109,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func didMove(to view: SKView) {
+        
+//        self.alpha = 0 // Set the initial alpha value to 0 (fully transparent)
+//        let fadeInAction = SKAction.fadeIn(withDuration: 0.5) // Fade in action with a duration of 0.5seconds
+//        self.run(fadeInAction) // Run the fade in action on the GameScene node
+
         // Play Background Music
         if let stageOneSoundURL = Bundle.main.url(forResource: "Stage 1 Sound", withExtension: "mp3") {
             stageOneSound = SKAudioNode(url: stageOneSoundURL)
@@ -325,19 +330,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
 
-                    let scene = MainMenu(fileNamed: "MainMenu")
-                    scene!.scaleMode = .aspectFill
-                    scene!.selectedButtonSound()
-                    self.scene?.view?.presentScene(scene)
+                    if let scene = MainMenu(fileNamed: "MainMenu") {
+                        scene.scaleMode = .aspectFill
+                        let transition = SKTransition.fade(withDuration: 2.5)
+                        scene.selectedButtonSound()
+                        self.scene?.view?.presentScene(scene, transition: transition)
+                    }
                     
                 } else if retryButton != nil && retryButton.contains(touchLocation) {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
 
-                    let scene = GameScene(fileNamed: "GameScene")
-                    scene!.scaleMode = .aspectFill
-                    scene!.playButtonSound()
-                    self.scene?.view?.presentScene(scene)
+                    if let scene = GameScene(fileNamed: "GameScene") {
+                        scene.scaleMode = .aspectFill
+                        let transition = SKTransition.fade(withDuration: 2.5)
+                        scene.playButtonSound()
+                        self.scene?.view?.presentScene(scene, transition: transition)
+                    }
                 }
             } else if isGameWin == true {
                 popUpAppeared = true
@@ -345,20 +354,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
 
-                    let scene = MainMenu(fileNamed: "MainMenu")
-                    scene!.scaleMode = .aspectFill
-                    scene!.selectedButtonSound()
-                    self.scene?.view?.presentScene(scene)
+                    if let scene = MainMenu(fileNamed: "MainMenu") {
+                        scene.scaleMode = .aspectFill
+                        let transition = SKTransition.fade(withDuration: 2.5)
+                        scene.selectedButtonSound()
+                        self.scene?.view?.presentScene(scene, transition: transition)
+                    }
                     
                 } else if nextButton.contains(touchLocation) {
                     UserDefaults.standard.set(true, forKey: "ExistingUser")
                     UserDefaults.standard.synchronize()
 
-                    let scene = MainMenu(fileNamed: "MainMenu")
-                    scene!.scaleMode = .aspectFill
-                    scene!.playButtonSound()
-                    self.scene?.view?.presentScene(scene)
-                    
+                    if let scene = MainMenu(fileNamed: "MainMenu") {
+                        scene.scaleMode = .aspectFill
+                        let transition = SKTransition.fade(withDuration: 2.5)
+                        scene.playButtonSound()
+                        self.scene?.view?.presentScene(scene, transition: transition)
+                    }
                 }
             }
         }
