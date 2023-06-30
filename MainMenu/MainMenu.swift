@@ -71,6 +71,12 @@ class MainMenu: SKScene {
             
             let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
             
+            if chapterList.contains(location) {
+                let scene = CarouselScene(fileNamed: "CarouselScene")
+                scene!.scaleMode = .aspectFill
+                self.view?.presentScene(scene)
+            }
+            
             if playButton.contains(location) {
                 if existingUser {
                     playButtonSound()
@@ -91,11 +97,7 @@ class MainMenu: SKScene {
                     scene!.scaleMode = .aspectFill
                     self.view?.presentScene(scene)
                 }
-                if chapterList.contains(location) {
-                    let scene = CarouselScene(fileNamed: "CarouselScene")
-                    scene!.scaleMode = .aspectFill
-                    self.view?.presentScene(scene)
-                }
+                
                                   
             }
         }
