@@ -7,8 +7,7 @@
 
 import SpriteKit
 import GameplayKit
-import Lottie
-import UIKit
+import AVFoundation
 
 struct PhysicsCategory {
     static let playerCategory: UInt32 = 0x2
@@ -19,6 +18,8 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    var dragUpTutorial: DragUpTutorial!
+    var dragDownTutorial: DragDownTutorial!
     
     var stageOneSound: SKAudioNode!
     var swimSound: SKAudioNode!
@@ -40,6 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var backgroundNode: SKSpriteNode!
     var invisNode: InvisibleNode!
+    var shaderNode: ShaderNode!
     
     var popUpLose: PopUpLose!
     var popUpWin: PopUpWin!
@@ -83,6 +85,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return CGRect(x: 0.0, y: playableMargin, width: size.width, height: playableHeight)
     }
     
+
+    // Button Sound Handler
+    var playButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Play Button Sound", ofType: "mp3")!)
+    var selectedButtonSoundURL = NSURL(fileURLWithPath:Bundle.main.path(forResource: "Selected Button Sound", ofType: "mp3")!)
+    var playAudioPlayer = AVAudioPlayer()
+    var selectedAudioPlayer = AVAudioPlayer()
+
+    func playButtonSound(){
+        guard let playButtonSound = try? AVAudioPlayer(contentsOf: playButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(playButtonSoundURL)")
+
+        }
+        playButtonSound.prepareToPlay()
+        self.playAudioPlayer = playButtonSound
+        self.playAudioPlayer.play()
+    }
+    
+    func selectedButtonSound(){
+        guard let selectedButtonSound = try? AVAudioPlayer(contentsOf: selectedButtonSoundURL as URL) else {
+            fatalError("Failed to initialize the audio player with asset: \(selectedButtonSoundURL)")
+        }
+        selectedButtonSound.prepareToPlay()
+        self.selectedAudioPlayer = selectedButtonSound
+        self.selectedAudioPlayer.play()
+    }
+    
+    
     override func didMove(to view: SKView) {
         // Play Background Music
         if let stageOneSoundURL = Bundle.main.url(forResource: "Stage 1 Sound", withExtension: "mp3") {
@@ -95,6 +124,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(swimSound)
         }
         
+        let existingUser = UserDefaults.standard.bool(forKey: "ExistingUser")
+        
         physicsWorld.contactDelegate = self
         
         karakter = Player(scene: self)
@@ -105,6 +136,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         spawnGrounds()
         createBG()
+        
+        if existingUser {
+            print("existing user")
+        } else {
+            shaderNode = ShaderNode(scene: self)
+            
+            dragUpTutorial = DragUpTutorial(scene:self)
+            dragUpTutorial.position = CGPoint(x: -frame.width/3, y: 100)
+            
+            dragDownTutorial = DragDownTutorial(scene:self)
+            dragDownTutorial.position = CGPoint(x: -frame.width/3, y: -100)
+            print("new user")
+        }
     }
     
     
@@ -197,7 +241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let lastGroundNode = groundNodes.last {
             invisNode = InvisibleNode(scene: self)
             invisNode.spawn()
-            invisNode.position = CGPoint(x: lastGroundNode.position.x + lastGroundNode.size.width, y: 0)
+            invisNode.position = CGPoint(x: lastGroundNode.position.x + lastGroundNode.size.width + 5, y: 0)
         }
     }
     
@@ -221,6 +265,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 stopObstacleSpawn()
                 
                 karakterDead = PlayerDead(scene: self, completion: {
+                    self.shaderNode = ShaderNode(scene: self)
                     self.popUpLose = PopUpLose(scene: self)
                     
                     self.menuButton = MenuButton(scene: self)
@@ -250,6 +295,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 stopObstacleSpawn()
                 
                 karakterDead = PlayerDead(scene: self, completion: {
+                    self.shaderNode = ShaderNode(scene: self)
                     self.popUpLose = PopUpLose(scene: self)
                     
                     self.menuButton = MenuButton(scene: self)
@@ -303,24 +349,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if isGameOver == true {
                 popUpAppeared = true
                 if menuButton != nil && menuButton.contains(touchLocation) {
+                    UserDefaults.standard.set(true, forKey: "ExistingUser")
+                    UserDefaults.standard.synchronize()
+
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
+                    scene!.selectedButtonSound()
                     self.scene?.view?.presentScene(scene)
+                    
                 } else if retryButton != nil && retryButton.contains(touchLocation) {
+                    UserDefaults.standard.set(true, forKey: "ExistingUser")
+                    UserDefaults.standard.synchronize()
+
                     let scene = GameScene(fileNamed: "GameScene")
                     scene!.scaleMode = .aspectFill
+                    scene!.playButtonSound()
                     self.scene?.view?.presentScene(scene)
                 }
             } else if isGameWin == true {
                 popUpAppeared = true
                 if menuButton.contains(touchLocation) {
+                    UserDefaults.standard.set(true, forKey: "ExistingUser")
+                    UserDefaults.standard.synchronize()
+
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
+                    scene!.selectedButtonSound()
                     self.scene?.view?.presentScene(scene)
+                    
                 } else if nextButton.contains(touchLocation) {
+                    UserDefaults.standard.set(true, forKey: "ExistingUser")
+                    UserDefaults.standard.synchronize()
+
                     let scene = MainMenu(fileNamed: "MainMenu")
                     scene!.scaleMode = .aspectFill
+                    scene!.playButtonSound()
                     self.scene?.view?.presentScene(scene)
+                    
                 }
             } else if isPause == true {
                 popUpAppeared = true
@@ -352,6 +417,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             isInitialTouch = false
             startBackgroundMovement()
             startObstacleSpawn()
+            if shaderNode != nil {
+                shaderNode.removeFromParent()
+            }
         }
     }
     
@@ -369,7 +437,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         startTouchPos = nil
-        //        isTouched = true
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -396,6 +463,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 winSound.autoplayLooped = false
                 addChild(winSound)
             }
+            
             isGameWin = true
             
             popUpWin = PopUpWin(scene: self)
@@ -404,6 +472,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             nextButton = NextButton(scene: self)
             nextButton.position = CGPoint(x: 80, y: -31)
             
+            stageOneSound.run(SKAction.stop())
+            swimSound.run(SKAction.stop())
             winSound.run(SKAction.play())
             print("win game")
         }
