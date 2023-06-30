@@ -36,8 +36,6 @@ class Player: SKSpriteNode {
     }
     
     func spawn() {
-        
-        position = CGPoint(x: -frame.width/3, y: 0)
         zPosition = 5.0
         
         let karakterTextures = self.texture!
