@@ -65,19 +65,24 @@ class InitialStory: SKScene {
             
             if existingUser {
                 if closeButton.contains(location) {
-                    let scene = MainMenu(fileNamed: "MainMenu")
-                    scene!.scaleMode = .aspectFill
-                    scene!.selectedButtonSound()
-                    self.view?.presentScene(scene)
+                    if let scene = MainMenu(fileNamed: "MainMenu") {
+                        scene.scaleMode = .aspectFill
+                        let transition = SKTransition.fade(withDuration: 2.5)
+                        scene.selectedButtonSound()
+                        self.view?.presentScene(scene, transition: transition)
+                    }
                 }
             } else {
                 if skipButton.contains(location) {
-                    let scene = GameScene(fileNamed: "GameScene")
-                    scene!.scaleMode = .aspectFill
-                    scene!.playButtonSound()
-                    self.view?.presentScene(scene)
+                    if let scene = GameScene(fileNamed: "GameScene") {
+                        scene.scaleMode = .aspectFill
+                        let transition = SKTransition.fade(withDuration: 2.5)
+                        scene.playButtonSound()
+                        self.view?.presentScene(scene, transition: transition)
+                    }
                 }
             }
         }
     }
+
 }
