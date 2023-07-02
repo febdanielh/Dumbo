@@ -18,11 +18,15 @@ class Obstacle: SKSpriteNode {
         // Add more texture options as needed
     ]
     
+    let floatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: 10.0), duration: 1)
+    let reverseFloatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: -10.0), duration: 1)
+    
+    var isFloatingPaused = false
+    
     init(){
         // Randomly select a texture from the array
         let randomTextureIndex = Int.random(in: 0..<obstacleTextures.count)
         let randomTexture = obstacleTextures[randomTextureIndex]
-//        let obstacleSize = CGSize(width: 80, height: 80)
         super.init(texture: randomTexture, color: UIColor.clear, size: randomTexture.size())
     }
     
@@ -47,19 +51,16 @@ class Obstacle: SKSpriteNode {
         let customPhysicsBodyFromTexture = SKPhysicsBody(texture: obstacleTextures, alphaThreshold: 0.5, size: obstacleSize)
         
         physicsBody = customPhysicsBodyFromTexture
-//        physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody?.categoryBitMask = PhysicsCategory.obstacleCategory
         physicsBody?.collisionBitMask = 0
         physicsBody?.contactTestBitMask = PhysicsCategory.playerCategory
         physicsBody?.affectedByGravity = false
         physicsBody?.velocity = CGVector(dx: -170.0, dy: 0)
         
-        let floatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: 10.0), duration: 1)
-        let reverseFloatingAction = SKAction.applyForce(CGVector(dx: 0.0, dy: -10.0), duration: 1)
         let floatingSequence = SKAction.sequence([floatingAction, reverseFloatingAction])
         let floatingRepeat = SKAction.repeatForever(floatingSequence)
         
-        run(floatingRepeat)
+        run(floatingRepeat, withKey: "float")
         
         //Create an action to check the obstacle's position and remove it if off-screen
         let despawnAction = SKAction.run {
@@ -82,5 +83,31 @@ class Obstacle: SKSpriteNode {
     
     func stopObstacleSpawn() {
         removeAction(forKey: "spawnObstacles")
+    }
+    
+    
+    func stopMoving() {
+        physicsBody = nil
+        removeAction(forKey: "float")
+        isFloatingPaused = true
+    }
+    
+    func resumeMoving() {
+        let obstacleTextures = texture!
+        let obstacleSize = obstacleTextures.size()
+        
+        let customPhysicsBodyFromTexture = SKPhysicsBody(texture: obstacleTextures, alphaThreshold: 0.5, size: obstacleSize)
+        
+        physicsBody = customPhysicsBodyFromTexture
+        physicsBody?.categoryBitMask = PhysicsCategory.obstacleCategory
+        physicsBody?.collisionBitMask = 0
+        physicsBody?.contactTestBitMask = PhysicsCategory.playerCategory
+        physicsBody?.affectedByGravity = false
+        physicsBody?.velocity = CGVector(dx: -170.0, dy: 0)
+        
+        if isFloatingPaused {
+            run(SKAction.repeatForever(SKAction.sequence([floatingAction, reverseFloatingAction])), withKey: "float")
+            isFloatingPaused = false
+        }
     }
 }

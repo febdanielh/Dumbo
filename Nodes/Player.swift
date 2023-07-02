@@ -36,8 +36,6 @@ class Player: SKSpriteNode {
     }
     
     func spawn() {
-        
-        position = CGPoint(x: -frame.width/3, y: 0)
         zPosition = 5.0
         
         let karakterTextures = self.texture!
@@ -53,6 +51,10 @@ class Player: SKSpriteNode {
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.usesPreciseCollisionDetection = true
         self.physicsBody?.allowsRotation = false
+    }
+    
+    func despawn() {
+        self.physicsBody = nil
     }
     
     func movePlayer() {
